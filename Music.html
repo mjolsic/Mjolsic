@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+  <head>
+      <title>Mj&ouml;lsic</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" type="text/css" href="css/style.css" />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="mobile-web-app-capable" content="yes" />
+      <link href="https://fonts.googleapis.com/css?family=Lobster&display=swap" rel="stylesheet">
+      <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+
+  <nav>
+    <header class="mainTitle">
+      <h4>Mj&ouml;lsic</h4>
+    </header>
+  </nav>
+
+  <audio id="playerSource"></audio>
+
+  <div class="controls">
+    <div class="buttons">
+      <div id="previous"><span class="glyphicon glyphicon-fast-backward" id="controlsIcon" ></div>
+      <div id="play-pause" onclick="document.getElementById('playerSource').play()"><span class="glyphicon glyphicon-play" id="controlsIcon"></div>
+      <div id="next"><span class="glyphicon glyphicon-fast-forward" id="controlsIcon"></div>
+      <div id="volume"><span class="glyphicon glyphicon-volume-up" id="controlsIcon"></div>
+      <span id="duration">--:--</span>
+      <div id="juiceBar"><input type="range" min="0" max="100" value="0" class="juiceBarDuration"></input></div>
+    </div>
+  </div>
+
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="mainContent" id="mainContent">
+          <div class="boxTitle">
+            <div class="m-0">Recommended Songs</div>
+            <div class="more pull-right">
+              <a class="textMuted" href>#</a>
+            </div>
+          </div>
+
+          <div class="outline"></div>
+
+          <ul class="clearfix">
+            <li class="col-md-2 col-sm-3 col-xs-4">
+              <a class="songPicLoading" style="background-image:url(0.jpg); " href=""></a>
+              <div class="title">
+                <h5 class="text-overflow">
+                  <a href="">#</a>
+                </h5>
+              </div>
+            </li>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
