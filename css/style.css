@@ -163,36 +163,6 @@ li, ul, ol{
   background-color: inherit;
 }
 
-@media screen and (max-width:768px){
-  body{
-    overflow-x:hidden;
-  }
-  .nav-links{
-    position: absolute;
-    right:0px;
-    height:92vh;
-    top:11.5vh;
-    background-color: #835C3B;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width:50%;
-    transform: translateX(100%);
-    transition: transform 0.5s ease-in;
-  }
-  .nav-links li{
-    opacity:0;
-  }
-  .burger{
-    display:block;
-    cursor: pointer;
-  }
-}
-
-.nav-active{
-  transform: translateX(0%);
-}
-
 .outline{
   width:100%;
   height:1px;
@@ -200,25 +170,4 @@ li, ul, ol{
   background-color: #999;
 }
 
-@keyframes navLinkFade{
-  from{
-    opacity:0;
-    transform: translateX(50px);
-  }
-  to{
-    opacity:1;
-    transform: translateX(0px);
-  }
-}
-
-.toggle .line-1{
-  transform: rotate(-45deg) translate(-5px,6px);
-}
-
-.toggle .line-2{
-  opacity:0;
-}
-
-.toggle .line-3{
-  transform: rotate(45deg) translate(-5px,-6px);
-}
+@media screen and (max-width:768px){}
