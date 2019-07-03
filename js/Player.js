@@ -13,7 +13,7 @@ function getSongs()
   for (let songsList=0; songsList < 4; songsList++)
   {
     output += '<li class="col-md-2 col-sm-3 col-xs-4">';
-    output += '<a class="songPicLoading" style="background-image:url(image/Chinese/' + songsList + '.jpg); " onclick="addAudioSource(' + songsList + ')"></a>';
+    output += '<div class="songPicLoading" style="background-image:url(image/Chinese/' + songsList + '.jpg); " onclick="addAudioSource(' + songsList + ')"></div>';
     output += '<div class="title">';
     output += '<h5 class="text-overflow">';
     output += '<a href="">' + songs[0].list[songsList].name + '</a>';
