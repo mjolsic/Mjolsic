@@ -116,8 +116,11 @@ li, ul, ol{
   padding-left: 29.5%;
 }
 
-i.material-icons{
+#shuffle i, #repeat i{
   color:white;
+}
+
+i.material-icons{
   cursor: pointer;
 }
 
@@ -254,10 +257,12 @@ input.juiceBarDuration{
 
 #playListQueue i{
   float:right;
+  color: white;
 }
 
 #volume i{
   float:right;
+  color: white;
 }
 
 .extraControls div.volumeControl{
@@ -286,6 +291,19 @@ input.juiceBarDuration{
   height:10px;
   cursor: pointer;
   box-shadow: -500px 0 0 500px #33E2FF;
+}
+
+#songPicture{
+  height:100%;
+  width:60px;
+  background-size:cover;
+}
+
+.songTitle{
+  height:100%;
+  width:120px;
+  margin-left: 20px;
+  padding-top: 5px;
 }
 
 @media screen and (max-width:768px){}
