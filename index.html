@@ -3,13 +3,13 @@
   <head>
       <title>Mj&ouml;lsic</title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link rel="stylesheet" type="text/css" href="css/style.css" />
+      <link href="css/style.css" rel="stylesheet" type="text/css"/>
+      <link href="css/material-icons.css" rel="stylesheet"/>
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="mobile-web-app-capable" content="yes" />
       <meta charset="utf-8">
       <link href="https://fonts.googleapis.com/css?family=Lobster&display=swap" rel="stylesheet">
       <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-      <link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
   </head>
 
   <nav>
@@ -18,7 +18,9 @@
     </header>
   </nav>
 
-  <audio id="playerSource"></audio>
+  <audio id="playerSource">
+    <source src="testing.mp3">
+  </audio>
 
   <div class="musicPlayerContainer">
     <div class="songInfo">
@@ -42,7 +44,7 @@
           <span id="start">--:--</span>
         </div>
         <div class="juiceBar">
-          <input type="range" min="0" max="100" value="0" step="1" id="juiceBarDuration">
+          <input type="range" min="0" max="100" value="0" step="0.5" id="juiceBarDuration">
         </div>
         <div class="duration-end">
           <span id="end">--:--</span>
@@ -87,7 +89,13 @@
 
         </div>
       </div>
+
+
     </div>
+    <div class="queueInterface">
+
+    </div>
+
     <script src="js/songsDetails.js"></script>
     <script src="js/Player.js"></script>
   </body>

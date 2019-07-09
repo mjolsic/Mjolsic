@@ -52,7 +52,7 @@ li, ul, ol{
   width:100%;
   height:70px;
   background-color:black;
-  z-index: 1;
+  z-index: 20;
   padding:10px;
 }
 
@@ -161,22 +161,32 @@ input.juiceBarDuration{
 #juiceBarDuration::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width:0;
+  width:10px;
+  height:10px;
   cursor: pointer;
-  box-shadow: -500px 0 0 500px #33E2FF;
+  border-radius: 100%;
+}
+
+#juiceBarDuration:hover::-webkit-slider-thumb{
+  background: white;
+  box-shadow: 0px 0px 0px 4px rgba(51, 153, 204, 0.50);
 }
 
 #juiceBarDuration{
   -webkit-appearance: none;
+  appearance: none;
   width:100% !important;
   height: 30%;
   outline: none;
-  opacity: 1;
+  opacity: 0.7;
   -webkit-transition: .2s;
   transition: opacity .2s;
   cursor: pointer;
   border-radius: 8px;
-  overflow: hidden;
+}
+
+#juiceBarDuration:hover{
+  opacity:1;
 }
 
 .mainContent{
@@ -265,6 +275,10 @@ input.juiceBarDuration{
   color: white;
 }
 
+#shuffle i:hover, #previous i:hover, #play-pause i:hover, #next i:hover, #repeat i:hover, #playListQueue i:hover, #volume i:hover{
+  color: #33E2FF;
+}
+
 .extraControls div.volumeControl{
   width:34%;
   padding-left: 2%;
@@ -276,21 +290,29 @@ input.juiceBarDuration{
   width:100% !important;
   height: 15%;
   outline: none;
-  opacity: 1;
+  opacity: 0.7;
   -webkit-transition: .2s;
   transition: opacity .2s;
   cursor: pointer;
   border-radius: 8px;
-  overflow: hidden;
+}
+
+#volumeRange:hover{
+  opacity:1;
 }
 
 #volumeRange::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width:0;
+  width:10px;
   height:10px;
   cursor: pointer;
-  box-shadow: -500px 0 0 500px #33E2FF;
+  border-radius: 100%;
+}
+
+#volumeRange:hover::-webkit-slider-thumb{
+  background: white;
+  box-shadow: 0px 0px 0px 4px rgba(51, 153, 204, 0.50);
 }
 
 #songPicture{
@@ -305,5 +327,24 @@ input.juiceBarDuration{
   margin-left: 20px;
   padding-top: 5px;
 }
+
+.queueInterface{
+  width:100%;
+  height:100%;
+  background-color: red;
+  z-index:5;
+  top:50px;
+  transform: translateY(100%);
+  position: fixed;
+  transition: transform 0.5s ease-in;
+  overflow-y: auto;
+  height:458px;
+}
+
+.queueInterface-active{
+  transform: translateY(0%);
+}
+
+
 
 @media screen and (max-width:768px){}

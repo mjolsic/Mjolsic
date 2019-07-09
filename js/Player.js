@@ -9,6 +9,11 @@ var previousIcon = document.getElementById("previous");
 var nextIcon = document.getElementById("next");
 var songLeftContanier = document.getElementById("song-Title");
 var songPicture = document.getElementById("songPicture");
+var playListQueue = document.getElementById("playListQueue");
+var queueInterface = document.querySelector(".queueInterface");
+var sliderState = false;
+var color;
+var colorOut;
 var isPlaying = false;
 var seeking = false;
 var seekTo;
@@ -18,11 +23,7 @@ window.addEventListener("load",initialisePlayer());
 
 function initialisePlayer(){
   //getSongs();
-  juiceBarDuration.addEventListener("input",seekSong);
-  audioTag.addEventListener("timeupdate",seekSongUpdate);
-  volumeIcon.addEventListener("click",mute);
-  volumeSlider.addEventListener("mousemove", setVolume);
-
+  eventsListenerCompilation()
   audioTag.onplaying = function(){
     isPlaying = true;
   };
@@ -30,6 +31,40 @@ function initialisePlayer(){
   audioTag.onpause = function(){
     isPlaying = false;
   };
+  if (sliderState === false){
+    juiceBarDuration.style.background = colorOut;
+  }
+  else if(sliderState === true){
+    juiceBarDuration.style.background = color;
+  }
+}
+
+function elementsAddEventListener(input, events, anonymousFunction, parameters){
+  if (parameters){
+    input.addEventListener(events, function(){window[anonymousFunction](parameters)});
+    return true;
+  }
+  else{
+    input.addEventListener(events, window[anonymousFunction]);
+    return false;
+  }
+}
+
+function eventsListenerCompilation(){
+  elementsAddEventListener(juiceBarDuration, "input", "seekSong");
+  elementsAddEventListener(juiceBarDuration, "mousemove", "colorChangeOnHover", juiceBarDuration);
+  elementsAddEventListener(juiceBarDuration, "click", "colorChangeOnHover", juiceBarDuration);
+  elementsAddEventListener(juiceBarDuration, "mouseleave", "colorChangeOnOver", juiceBarDuration);
+  elementsAddEventListener(juiceBarDuration, "mouseout", "colorChangeOnOver", juiceBarDuration);
+  elementsAddEventListener(audioTag, "timeupdate", "seekSongUpdate");
+  elementsAddEventListener(volumeIcon, "click", "mute");
+  elementsAddEventListener(volumeSlider, "mousemove", "setVolume");
+  elementsAddEventListener(volumeSlider, "mousemove", "colorChangeOnHover", volumeSlider);
+  elementsAddEventListener(volumeSlider, "input", "colorChangeOnHover", volumeSlider);
+  elementsAddEventListener(volumeSlider, "click", "colorChangeOnHover", volumeSlider);
+  elementsAddEventListener(volumeSlider, "mouseleave", "colorChangeOnOver", volumeSlider);
+  elementsAddEventListener(volumeSlider, "mouseout", "colorChangeOnOver", volumeSlider);
+  elementsAddEventListener(playListQueue, "click", "showQueueInterface");
 }
 
 function getSongs(){
@@ -103,6 +138,8 @@ function seekSongUpdate(){
     previous.style.color = "white";
     playPause.style.color = "white";
     next.style.color = "white";
+    color = "linear-gradient(90deg, #33E2FF " + juiceBarDuration.value + "%, grey " + juiceBarDuration.value + "%)";
+    colorOut = "linear-gradient(90deg, white " + juiceBarDuration.value + "%, grey " + juiceBarDuration.value + "%)";
     var currentMinutes = Math.floor(audioTag.currentTime / 60);
     var currentSeconds = Math.floor(audioTag.currentTime - currentMinutes * 60);
     var durationMinutes = Math.floor((audioTag.duration - audioTag.currentTime) / 60);
@@ -113,6 +150,12 @@ function seekSongUpdate(){
     if(durationSeconds < 10){ durationSeconds = "0" + durationSeconds;};
     startTime.innerHTML = currentMinutes + ":" + currentSeconds;
     endTime.innerHTML = durationMinutes + ":" + durationSeconds;
+    if (sliderState === false){
+      juiceBarDuration.style.background = colorOut;
+    }
+    else if(sliderState === true){
+      juiceBarDuration.style.background = color;
+    }
   }
 }
 
@@ -145,5 +188,32 @@ function setVolume(){
   else if(volumeSlider.value <= 100 && volumeSlider.value > 50){
     volumeIcon.firstElementChild.innerText = "volume_up";
     audioTag.muted = false;
+  }
+}
+
+function showQueueInterface(){
+  queueInterface.classList.toggle("queueInterface-active");
+  if (queueInterface.classList[1] === "queueInterface-active"){
+    playListQueue.firstElementChild.innerText = "keyboard_arrow_down";
+  }
+  else{
+    playListQueue.firstElementChild.innerText = "playlist_play";
+  }
+}
+
+function colorChangeOnHover(input){
+  color = "linear-gradient(90deg, #33E2FF " + input.value + "%, grey " + input.value + "%)";
+  input.style.background = color;
+  sliderState = true;
+}
+
+function colorChangeOnOver(input){
+  colorOut = "linear-gradient(90deg, white " + input.value + "%, grey " + input.value + "%)";
+  if(sliderState === true){
+    input.style.background = color;
+    sliderState = false;
+  }
+  else{
+    input.style.background = colorOut;
   }
 }
