@@ -11,10 +11,11 @@ var songLeftContanier = document.getElementById("song-Title");
 var songPicture = document.getElementById("songPicture");
 var playListQueue = document.getElementById("playListQueue");
 var queueInterface = document.querySelector(".queueInterface");
+var musicPlayerContainer;
+var body;
 var sliderState = false;
 var color;
 var colorOut;
-var isPlaying = false;
 var seeking = false;
 var seekTo;
 var currentPlaying = "";
@@ -22,15 +23,10 @@ var currentPlaying = "";
 window.addEventListener("load",initialisePlayer());
 
 function initialisePlayer(){
-  //getSongs();
-  eventsListenerCompilation()
-  audioTag.onplaying = function(){
-    isPlaying = true;
-  };
-
-  audioTag.onpause = function(){
-    isPlaying = false;
-  };
+  getSongs();
+  eventsListenerCompilation();
+  relativeSizeCss();
+  queueStatus();
   if (sliderState === false){
     juiceBarDuration.style.background = colorOut;
   }
@@ -65,6 +61,7 @@ function eventsListenerCompilation(){
   elementsAddEventListener(volumeSlider, "mouseleave", "colorChangeOnOver", volumeSlider);
   elementsAddEventListener(volumeSlider, "mouseout", "colorChangeOnOver", volumeSlider);
   elementsAddEventListener(playListQueue, "click", "showQueueInterface");
+  elementsAddEventListener(window, "resize", "relativeSizeCss");
 }
 
 function getSongs(){
@@ -76,7 +73,7 @@ function getSongs(){
     output += '<div class="songPicLoading" style="background-image:url(image/Chinese/' + songsList + '.jpg); " onclick="addAudioSource(' + songsList + ')"></div>';
     output += '<div class="title">';
     output += '<h5 class="text-overflow">';
-    output += '<a href="">' + songs[0].list[songsList].name + '</a>';
+    output += '<a href="">' + songs[0].list[songsList].authorName + " - " + songs[0].list[songsList].name + '</a>';
     output += '</h5>';
     output += '</div>';
     output += '</li>';
@@ -86,19 +83,14 @@ function getSongs(){
 
 
 function addAudioSource(input){
+  localStorage.QueueStatus = true;
   if(currentPlaying === ""){
     audioTag.pause();
     console.log(true);
   }
   else if(currentPlaying === audioTag.currentSrc){
     audioTag.pause();
-    startTime.style.color = "grey";
-    endTime.style.color = "grey";
-    previous.style.color = "grey";
-    playPause.style.color = "grey";
-    next.style.color = "grey";
-    startTime.innerHTML = "--:--";
-    endTime.innerHTML = "--:--";
+    styleOnAction("ended");
     audioTag.setAttribute("src", 'https://drive.google.com/uc?export=download&id=' + songs[0].list[input].driveUrl + '')
     console.log(songs[0].list[input].name);
   }
@@ -112,14 +104,14 @@ function addAudioSource(input){
 }
 
 function pausePlay(){
-  if(audioTag.innerHTML !== ""){
-    if(isPlaying){
-      audioTag.pause();
-      playPause.firstElementChild.innerText = "play_arrow";
-    }
-    else{
+  if(audioTag.innerHTML !== "" && localStorage.QueueStatus !== "false"){
+    if(audioTag.paused){
       audioTag.play();
       playPause.firstElementChild.innerText = "pause";
+    }
+    else{
+      audioTag.pause();
+      playPause.firstElementChild.innerText = "play_arrow";
     }
   }
 }
@@ -133,11 +125,7 @@ function seekSongUpdate(){
   if(isNaN(audioTag.currentTime) === false && isNaN(audioTag.duration) === false){
     var newTime = audioTag.currentTime * (100 / audioTag.duration);
     juiceBarDuration.value = newTime;
-    startTime.style.color = "white";
-    endTime.style.color = "white";
-    previous.style.color = "white";
-    playPause.style.color = "white";
-    next.style.color = "white";
+    styleOnAction("started");
     color = "linear-gradient(90deg, #33E2FF " + juiceBarDuration.value + "%, grey " + juiceBarDuration.value + "%)";
     colorOut = "linear-gradient(90deg, white " + juiceBarDuration.value + "%, grey " + juiceBarDuration.value + "%)";
     var currentMinutes = Math.floor(audioTag.currentTime / 60);
@@ -156,6 +144,7 @@ function seekSongUpdate(){
     else if(sliderState === true){
       juiceBarDuration.style.background = color;
     }
+    musicFinishedAction();
   }
 }
 
@@ -215,5 +204,33 @@ function colorChangeOnOver(input){
   }
   else{
     input.style.background = colorOut;
+  }
+}
+
+function musicFinishedAction(){
+  if (audioTag.ended){
+    playPause.firstElementChild.innerText = "play_arrow";
+    styleOnAction("ended");
+    juiceBarDuration.value = 0;
+    console.log(true);
+  }
+}
+
+function styleOnAction(input){
+  if (input === "ended"){
+    startTime.style.color = "grey";
+    endTime.style.color = "grey";
+    previous.style.color = "grey";
+    playPause.style.color = "grey";
+    next.style.color = "grey";
+    startTime.innerHTML = "--:--";
+    endTime.innerHTML = "--:--";
+  }
+  else if (input === "started"){
+    startTime.style.color = "white";
+    endTime.style.color = "white";
+    previous.style.color = "white";
+    playPause.style.color = "white";
+    next.style.color = "white";
   }
 }
