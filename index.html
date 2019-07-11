@@ -8,7 +8,7 @@
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="mobile-web-app-capable" content="yes" />
       <meta charset="utf-8">
-      <link href="https://fonts.googleapis.com/css?family=Lobster&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Merienda|ZCOOL+XiaoWei&display=swap" rel="stylesheet">
       <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
   </head>
 
@@ -21,7 +21,7 @@
   <audio id="playerSource"><source src="testing.mp3"></audio>
 
   <div class="musicPlayerContainer">
-    <div class="songInfo">
+    <div class="songInfoMusicPlayer">
       <div id="songPicture" ></div>
       <div class="songTitle">
         <span id="song-Title"></span>
@@ -62,7 +62,116 @@
   </div>
 
   <div class="queueInterface">
+    <div class="queueInformation-leftPanel">
+      <div class="collapseButton"><i class="material-icons">keyboard_arrow_down</i></div>
+      <div class="queueSongDetails">
+        <div class="queueSongPicture"></div>
+        <div class="queueSong-Title">
+          <span class="queueSongTitle">Title</span>
+          <span class="queueSongAuthor">By Author</span>
+        </div>
+      </div>
 
+      <div class="nowPlaying">Now Playing</div>
+
+      <div class="outline"></div>
+
+      <div class="queueListTable">
+        <table class="queueList">
+          <thead>
+            <tr>
+              <th class="check-box"><input type="checkbox" name="" value=""></th>
+              <th class="title">Title</th>
+              <th class="artist">Artist</th>
+              <th>Options</th>
+              <th><i class="material-icons">access_time</i></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="checkbox" name="" value=""></td>
+              <td>Title</td>
+              <td>Artist</td>
+              <td>Option</td>
+              <td>Duration</td>
+
+            </tr>
+            <tr>
+              <td><input type="checkbox" name="" value=""></td>
+              <td>Title</td>
+              <td>Artist</td>
+              <td>Option</td>
+              <td>Duration</td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" name="" value=""></td>
+              <td>Title</td>
+              <td>Artist</td>
+              <td>Option</td>
+              <td>Duration</td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" name="" value=""></td>
+              <td>Title</td>
+              <td>Artist</td>
+              <td>Optiosn</td>
+              <td>Duration</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="upNext">Up Next</div>
+
+      <div class="outline"></div>
+
+      <table class="queueListUpNext">
+        <thead>
+          <tr>
+            <th class="check-box"><input type="checkbox" name="" value=""></th>
+            <th class="title">Title</th>
+            <th class="artist">Artist</th>
+            <th>Options</th>
+            <th><i class="material-icons">access_time</i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox" name="" value=""></td>
+            <td>Title</td>
+            <td>Artist</td>
+            <td>Option</td>
+            <td>Duration</td>
+
+          </tr>
+          <tr>
+            <td><input type="checkbox" name="" value=""></td>
+            <td>Title</td>
+            <td>Artist</td>
+            <td>Option</td>
+            <td>Duration</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" name="" value=""></td>
+            <td>Title</td>
+            <td>Artist</td>
+            <td>Option</td>
+            <td>Duration</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" name="" value=""></td>
+            <td>Title</td>
+            <td>Artist</td>
+            <td>Optiosn</td>
+            <td>Duration</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="songInformations-rightPanel">
+
+    </div>
   </div>
 
   <body>
@@ -72,7 +181,7 @@
           <div class="boxTitle">
             <div class="m-0">Recommended Songs</div>
             <div class="more pull-right">
-              <a class="textMuted" href>#</a>
+              <a class="textMuted" href>更多</a>
             </div>
           </div>
 
