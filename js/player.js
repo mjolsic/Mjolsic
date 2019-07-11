@@ -23,7 +23,7 @@ var currentPlaying = "";
 window.addEventListener("load",initialisePlayer());
 
 function initialisePlayer(){
-  //getSongs();
+  getSongs();
   eventsListenerCompilation();
   relativeSizeCss();
   queueStatus();
