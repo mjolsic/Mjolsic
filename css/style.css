@@ -2,8 +2,8 @@
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
+  font-family: 'Merienda One', cursive, 'ZCOOL XiaoWei', serif;
 
-  font-family: 'Merienda', cursive;
   font-style: italic;
 }
 
@@ -222,7 +222,6 @@ input.juiceBarDuration{
 
 .textMuted{
   color:black;
-    font-family: 'ZCOOL XiaoWei', serif;
 }
 
 .songPicLoading{
@@ -354,8 +353,8 @@ input.juiceBarDuration{
 }
 
 .queueInformation-leftPanel div{
-  margin-top:10px;
-  margin-bottom:10px;
+  margin-top:20px;
+
 }
 
 .queueInformation-leftPanel{
@@ -363,16 +362,6 @@ input.juiceBarDuration{
   float:left;
   padding:0px 10px 0px 10px;
   height:100%;
-}
-
-.songInformations-rightPanel{
-  min-width: 350px;
-  max-width: 350px;
-  width: calc(100%/3);
-  height: 500px;
-  background-color: blue;
-  float: right;
-  margin-left: 20px;
 }
 
 .collapseButton{
@@ -426,6 +415,10 @@ input.juiceBarDuration{
   color: white;
 }
 
+.queueListTable{
+  margin-bottom:122px;
+}
+
 .queueList{
   margin:20px 0px;
   width:100%;
@@ -433,12 +426,13 @@ input.juiceBarDuration{
 }
 
 .queueList th, .queueList td{
-  padding:12px 15px;
+  padding:10px 15px;
 }
 
 .queueList tbody tr{
   border-bottom: 1px solid #C0C0C0;
 }
+
 
 th{
   width:100px;
@@ -460,6 +454,7 @@ th.artist{
   font-size: 35px;
   padding-left: 20px;
   color:white;
+
 }
 
 .queueListUpNext{
@@ -474,4 +469,85 @@ th.artist{
 
 .queueListUpNext tbody tr{
   border-bottom: 1px solid #C0C0C0;
+}
+
+tbody tr:hover{
+  background-color: #383838;
+  cursor: pointer;
+}
+
+
+input[type="checkbox"]{
+  display:none;
+}
+
+label{
+  padding-top: 6px;
+}
+
+label i.material-icons:hover{
+  color:#33E2FF;
+}
+
+.songInformations-rightPanel{
+  min-width: 350px;
+  max-width: 350px;
+  width: calc(100%/3);
+  height: 900px;
+  float: right;
+  margin-left: 20px;
+  position:relative;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+
+}
+
+.songInformations-rightPanel div{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between
+}
+
+.songInformations-rightPanel .queueSongPicture{
+  margin-top: 120px;
+  margin-left: 105px;
+}
+
+.songInformations-rightPanel .queueSongTitle{
+  margin-top:20px;
+  color:white;
+}
+
+.songInformations-rightPanel .queueSongAuthor{
+  margin-top:30px;
+  color:white;
+}
+
+.rightPanelButton{
+  margin-top: 20px;
+}
+
+.rippleBtn{
+  color:white;
+  width:200px;
+  height:80px;
+  font-size: 24px;
+  text-transform: uppercase;
+  position: absolute;
+  top:500px;
+}
+
+button:hover{
+  border: 2px solid #33E2FF;
+  background: #33E2FF;
+  color:black;
+}
+
+button{
+  border: 2px solid white;
+  outline:none;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0);
+  padding: 15px 25px;
+  border-radius: 8px;
 }

@@ -58,8 +58,8 @@ let songs = [
       },
       {
         number:9,
-        authorName:"那一夜",
-        name:"邓紫棋",
+        authorName:"邓紫棋",
+        name:"那一夜",
         driveUrl:"1OxWQJuOHTGWC1nm20WkPNGwhFPb7_jeW",
       },
       {
@@ -70,7 +70,7 @@ let songs = [
       },
       {
         number:11,
-        authorName:"孫語賽, 蕭全",
+        authorName:"孫語賽,蕭全",
         name:"不僅僅是喜歡",
         driveUrl:"12UiH6W3h7xxH90ffvC8sFMlqoNp4oEWu",
       },
@@ -88,13 +88,13 @@ let songs = [
       },
       {
         number:14,
-        authorName:"于文文 ft. 伊一",
+        authorName:"于文文ft.伊一",
         name:"最好的",
         driveUrl:"1sKlbnUPLk5ZwkOIWL9EvQLahDmwyJLHv",
       },
       {
         number:15,
-        authorName:"于文文 ft. 杨迪",
+        authorName:"于文文ft.杨迪",
         name:"鲜为人知",
         driveUrl:"1DRIUzzQ1DEObLcD_C1fOvYHQ1LzOofJA",
       },
@@ -148,7 +148,7 @@ let songs = [
       },
       {
         number:24,
-        authorName:"周深, 毛不易",
+        authorName:"周深,毛不易",
         name:"梅香如故",
         driveUrl:"1IuKz7H5XFe2We3gtN2VSzqNro0-SvNK5",
       },
@@ -208,7 +208,7 @@ let songs = [
       },
       {
         number:34,
-        authorName:"毛不易 ft. 周峻纬",
+        authorName:"毛不易ft.周峻纬",
         name:"明天",
         driveUrl:"1_K0xdZP1Uf5s14pWDVmqBfjyo2QYJhVK",
       },
@@ -250,7 +250,7 @@ let songs = [
       },
       {
         number:41,
-        authorName:"薛之谦 ft. 小岳岳",
+        authorName:"薛之谦ft.小岳岳",
         name:"醒来",
         driveUrl:"1bURi5tSKe4XcN-V17X5Sm4jrXT4lDzVa",
       },
@@ -280,7 +280,7 @@ let songs = [
       },
       {
         number:46,
-        authorName:"謝和弦 ft. 張智成",
+        authorName:"謝和弦ft.張智成",
         name:"在沒有你以後",
         driveUrl:"1yIZp1BTTkL_2QtwYnEwYSunsarSrwx5R",
       },
@@ -310,8 +310,8 @@ let songs = [
       },
       {
         number:51,
-        authorName:"鞠文嫻 ft. Deepain",
-        name:"病變 (女聲版)",
+        authorName:"鞠文嫻ft.Deepain",
+        name:"病变",
         driveUrl:"17wnBAjcdvBAMfWJWSfHVPZXq2giniazF",
       },
       {
