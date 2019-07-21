@@ -7,6 +7,11 @@
   font-style: italic;
 }
 
+a{
+  text-decoration: none;
+  cursor:pointer;
+}
+
 nav{
   float:left;
   min-height: 11.5px !important;
@@ -334,7 +339,7 @@ input.juiceBarDuration{
 .queueInterface{
   width:100%;
   background-color: #202020;
-  z-index:5;
+  z-index:6;
   top:0px;
   margin-top: 50px;
   transform: translateY(100%);
@@ -344,7 +349,6 @@ input.juiceBarDuration{
   min-width: 1030px;
   padding-left:20px;
   padding-right:20px;
-  display: block;
   display: flex;
 }
 
@@ -354,7 +358,6 @@ input.juiceBarDuration{
 
 .queueInformation-leftPanel div{
   margin-top:20px;
-
 }
 
 .queueInformation-leftPanel{
@@ -402,7 +405,6 @@ input.juiceBarDuration{
 
 .queueSongTitle{
   font-size: 50px;
-
 }
 
 .queueSongAuthor{
@@ -452,9 +454,20 @@ th.artist{
 
 .upNext{
   font-size: 35px;
+  margin:0 !important;
   padding-left: 20px;
   color:white;
+  float:left;
+}
 
+.upNextContainer{
+  width:100%;
+  height:50px;
+}
+
+.refresh{
+  float:right;
+  color:white;
 }
 
 .queueListUpNext{
@@ -550,4 +563,112 @@ button{
   background: rgba(255, 255, 255, 0);
   padding: 15px 25px;
   border-radius: 8px;
+}
+
+.authorPage{
+  z-index: 5;
+  width:100%;
+  background-color: #202020;
+  top:0px;
+  margin-top: 50px;
+  transform: translateX(-100%);
+  position: fixed;
+  transition: transform 0.5s ease-in;
+  overflow-y:auto;
+  min-width: 1030px;
+  padding-left:30px;
+  padding-right:30px;
+}
+
+.authorPage-active{
+  transform: translateX(0%);
+}
+
+.authorPage div{
+  display: inline-block;
+  margin-top: 20px;
+  color: white;
+}
+
+.backButton{
+  width: 100%;
+  display:inline-flex;
+}
+
+.backButton i{
+  float:left;
+}
+
+.backButton a{
+  text-decoration: none;
+  color:inherit;
+  float:left;
+  height:100%;
+}
+
+.backButton a:hover{
+  color:inherit;
+}
+
+.back{
+  font-size: 17px;
+}
+
+.authorDetails{
+  height:200px;
+  width:100%;
+  color:white;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: flex;
+}
+
+.authorPic{
+  margin-left: 30px;
+  min-height:140px;
+  min-width:140px;
+  width:140px;
+  height:140px;
+  float:left;
+  background-color: orange;
+}
+
+.authorName{
+  margin-left: 30px;
+  min-height: 140px;
+  min-width: 420px;
+  width: 580px;
+  height: 140px;
+  float:left;
+}
+
+.authorName span, .authorName button{
+  display: flex;
+  flex-direction: column;
+}
+
+.author-Name{
+  font-size: 50px;
+}
+
+.authorsSongs{
+  width:100%;
+}
+
+.allSongsList{
+  margin:20px 0px;
+  width:100%;
+  color: white;
+}
+
+.allSongsList th, .allSongsList td{
+  padding:10px 15px;
+}
+
+.allSongsList tbody tr{
+  border-bottom: 1px solid #C0C0C0;
+}
+
+.playAll{
+  border-radius: 50px 50px 50px 50px;
 }

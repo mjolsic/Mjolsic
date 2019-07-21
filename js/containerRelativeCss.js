@@ -1,8 +1,8 @@
 
 
 function relativeSizeCss(){
-  rightPanel.style.height = queueInterface.offsetHeight;
   body = window.innerHeight - 120;
+  rightPanel.style.height = "" + queueInterface.scrollHeight + "px";
   queueInterface.style.height = "" + body +"px";
-
+  authorPage.style.height = "" + body +"px";
 }

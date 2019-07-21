@@ -94,7 +94,10 @@
         </table>
       </div>
 
-      <div class="upNext">Up Next</div>
+      <div class="upNextContainer">
+        <div class="upNext">Up Next</div>
+        <div class="refresh"><i class="material-icons">refresh</i></div>
+      </div>
 
       <div class="outline"></div>
 
@@ -130,6 +133,46 @@
     </div>
   </div>
 
+  <div class="authorPage">
+
+    <div class="backButton">
+      <i class="material-icons">keyboard_arrow_left</i>
+      <a class="back">Back</a>
+    </div>
+
+    <div class="authorDetails">
+      <div class="authorPic"></div>
+      <div class="authorName">
+        <span class="author-Name">AuthorName</span>
+        <button class="playAll" type="button">Play All</button>
+      </div>
+    </div>
+
+    <div class="authorsSongs">
+      <table class="allSongsList">
+        <thead>
+          <tr>
+            <th class="check-box"><input type="checkbox" name="" value=""></th>
+            <th class="title">Title</th>
+            <th class="artist">Artist</th>
+            <th>Options</th>
+            <th><i class="material-icons">access_time</i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><label><input type="checkbox" class="queueCheckBox"><i class="material-icons">check_box_outline_blank</i></label></td>
+            <td>Title</td>
+            <td>Artist</td>
+            <td>Option</td>
+            <td>Duration</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
   <body>
     <div class="container">
       <div class="row">
@@ -137,7 +180,7 @@
           <div class="boxTitle">
             <div class="m-0">Recommended Songs</div>
             <div class="more pull-right">
-              <a class="textMuted" href>更多</a>
+              <a class="textMuted">更多</a>
             </div>
           </div>
 
@@ -145,10 +188,10 @@
 
           <ul class="clearfix" id="ulClearFix">
             <li class="col-md-2 col-sm-3 col-xs-4">
-              <a class="songPicLoading" style="background-image:url(0.jpg); " href=""></a>
+              <a class="songPicLoading" style="background-image:url(0.jpg); "></a>
               <div class="title">
                 <h5 class="text-overflow">
-                  <a href="">#</a>
+                  <a class="authorSName">#</a>
                 </h5>
               </div>
             </li>
@@ -157,10 +200,10 @@
         </div>
       </div>
 
-
-
     </div>
 
+    <script src="js/queueInterface.js"></script>
+    <script src="js/variables.js"></script>
     <script src="js/playList.js"></script>
     <script src="js/containerRelativeCss.js"></script>
     <script src="js/songsDetails.js"></script>

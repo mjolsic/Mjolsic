@@ -1,61 +1,18 @@
-var audioTag = document.getElementById("playerSource");
-var playPause = document.getElementById("play-pause");
-var juiceBarDuration = document.getElementById("juiceBarDuration");
-var volumeIcon = document.getElementById("volume");
-var volumeSlider = document.getElementById("volumeRange");
-var startTime = document.getElementById("start");
-var endTime = document.getElementById("end");
-var previousIcon = document.getElementById("previous");
-var nextIcon = document.getElementById("next");
-var songLeftContainer = document.getElementById("song-Title");
-var songPicture = document.getElementById("songPicture");
-var playListQueue = document.getElementById("playListQueue");
-var queueInterface = document.querySelector(".queueInterface");
-var songPicLoadingClass = document.getElementsByClassName('songPicLoading');
-var selectedSong;
-//Variable for css
-var body;
-var rightPanel = document.getElementsByClassName('songInformations-rightPanel')[0];
-//
-var sliderState = false;
-var color;
-var colorOut;
-var seeking = false;
-var currentPlaying = "";
-var tableOutput = "";
-var songTitleArray = [];
-var authPlusTitleArray = [];
-var indexOfDisplayedSongTitle;
-var songNameInSongs;
-var titleNameofSTA;
-var indexInTheWholeCollection;
-var dataValue;
-var realName;
-var currentPlayingTitle;
-
-
-//Initiating Table Variables
-var tableBody = document.querySelector('.queueList tbody');
-var nameInTableContent = [];
-
-//Initiating Current playing song picture
-var queueSongPicture = document.getElementsByClassName('queueSongPicture')[0];
-var queueSongTitleText = document.getElementsByClassName('queueSongTitle')[0];
-var queueSongAuthorText = document.getElementsByClassName('queueSongAuthor')[0];
-
-
-//Initiate button variable
-var rippleButton = document.getElementsByClassName('rippleBtn')[0];
-
 
 window.addEventListener("load",initialisePlayer());
 
+function testing(){
+  songNameInSongs = songs[0].list.map(function(x){return x.name});
+}
 
 function initialisePlayer(){
+  //testing
+  testing();
   getSongs();
   eventsListenerCompilation();
   relativeSizeCss();
   queueStatus();
+  getNameForUpNextTable();
 
   if (sliderState === false){
     juiceBarDuration.style.background = colorOut;
@@ -79,15 +36,12 @@ function elementsAddEventListener(input, events, anonymousFunction, parameters){
 function eventsListenerCompilation(){
   elementsAddEventListener(juiceBarDuration, "input", "seekSong");
   elementsAddEventListener(juiceBarDuration, "mousemove", "colorChangeOnHover", juiceBarDuration);
-  elementsAddEventListener(juiceBarDuration, "click", "colorChangeOnHover", juiceBarDuration);
   elementsAddEventListener(juiceBarDuration, "mouseleave", "colorChangeOnOver", juiceBarDuration);
   elementsAddEventListener(juiceBarDuration, "mouseout", "colorChangeOnOver", juiceBarDuration);
   elementsAddEventListener(audioTag, "timeupdate", "seekSongUpdate");
-  elementsAddEventListener(volumeIcon, "click", "mute");
   elementsAddEventListener(volumeSlider, "mousemove", "setVolume");
   elementsAddEventListener(volumeSlider, "mousemove", "colorChangeOnHover", volumeSlider);
   elementsAddEventListener(volumeSlider, "input", "colorChangeOnHover", volumeSlider);
-  elementsAddEventListener(volumeSlider, "click", "colorChangeOnHover", volumeSlider);
   elementsAddEventListener(volumeSlider, "mouseleave", "colorChangeOnOver", volumeSlider);
   elementsAddEventListener(volumeSlider, "mouseout", "colorChangeOnOver", volumeSlider);
   elementsAddEventListener(window, "resize", "relativeSizeCss");
@@ -99,20 +53,17 @@ function getSongs(){
   ulClearFix.innerHTML = "";
   var output = "";
   var songTitles;
-  var authorPlusTitle = {};
+  var authorDataValue;
   for (var songsList = 4; songsList <= 7; songsList++){
     authorPlusTitle = {};
     songTitles = songs[0].list[songsList].authorName + "-" + songs[0].list[songsList].name;
+    authorDataValue = songs[0].list[songsList].authorName
     songNameInSongs = songs[0].list.map(function(x){return x.name});
-    authorPlusTitle.authorName = songs[0].list[songsList].authorName;
-    authorPlusTitle.titleName = songs[0].list[songsList].name;
-    songTitleArray.push(authorPlusTitle);
-    authPlusTitleArray.push(authorPlusTitle);
     output += '<li class="col-md-2 col-sm-3 col-xs-4">';
-    output += '<div class="songPicLoading" data-value="'+ authorPlusTitle.titleName +'" style="background-image:url(image/Chinese/' + songTitles + '.jpg);"' + '></div>';
+    //output += '<div class="songPicLoading" data-value="'+ authorPlusTitle.titleName +'" style="background-image:url(image/Chinese/' + songTitles + '.jpg);"' + '></div>';
     output += '<div class="title">';
     output += '<h5 class="text-overflow">';
-    output += '<a href="">' + songTitles + '</a>';
+    output += '<a class="authorSName" data-value="' + authorDataValue + '">' + songTitles + '</a>';
     output += '</h5>';
     output += '</div>';
     output += '</li>';
@@ -122,35 +73,45 @@ function getSongs(){
 
 function addAudioSource(input){
   localStorage.QueueStatus = true;
-  //Extract title names in song title array
-  titleNameofSTA = songTitleArray.map(function(x){return x.titleName});
-  //Index to build table
-  indexOfDisplayedSongTitle = titleNameofSTA.indexOf(input);
   //Index in the whole song collection
   indexInTheWholeCollection = songNameInSongs.indexOf(input);
-  var authName = authPlusTitleArray[indexOfDisplayedSongTitle].authorName;
-  var titleName = authPlusTitleArray[indexOfDisplayedSongTitle].titleName;
+  authName = songs[0].list[indexInTheWholeCollection].authorName;
+  titleName = songs[0].list[indexInTheWholeCollection].name;
   realName = authName + "-" + titleName;
   if(currentPlaying === ""){
     generateTableContent(authName,titleName);
+    nameInTableContent.push(realName);
     styleOfTable();
   }
   else if(currentPlaying === audioTag.currentSrc){
     audioTag.pause();
     styleOnAction("ended");
-    audioTag.setAttribute("src", 'https://drive.google.com/uc?export=download&id=' + songs[0].list[indexInTheWholeCollection].driveUrl + '');
+    audioTag.setAttribute("src", drivePreUrl + songs[0].list[indexInTheWholeCollection].driveUrl + '');
     seeIfSame(realName,authName,titleName);
   }
-  audioTag.innerHTML = '<source src="https://drive.google.com/uc?export=download&id=' + songs[0].list[indexInTheWholeCollection].driveUrl + '">';
+  audioTag.innerHTML = '<source src="' + drivePreUrl + songs[0].list[indexInTheWholeCollection].driveUrl + '">';
   playPause.firstElementChild.innerText = "pause";
-  currentPlaying = 'https://drive.google.com/uc?export=download&id=' + songs[0].list[indexInTheWholeCollection].driveUrl + '';
-  songPicture.style.backgroundImage = "url('image/Chinese/" + realName + ".jpg')";
-  songLeftContainer.innerText = songs[0].list[indexInTheWholeCollection].name;
-  songLeftContainer.style.color = "white";
-  queueSongPicture.style.backgroundImage = "url('image/Chinese/" + realName + ".jpg')";
-  queueSongTitleText.innerText = titleName;
-  queueSongAuthorText.innerText = "By " + authName;
+  currentPlaying = drivePreUrl + songs[0].list[indexInTheWholeCollection].driveUrl + '';
+  displayStyle(songPicture, songLeftContainer, "", 'source')
+  //Details on left panel
+  displayStyle(queueSongPicture, queueSongTitleText, queueSongAuthorText, "left")
+  //Details on right panel
+  displayStyle(queueRightSongPanel, queueRightSongTitleText, queueRightSongAuthorText, "right")
   audioTag.play();
+}
+
+//style on the music player
+function displayStyle(input1, input2, input3, position){
+  if (position === "left" || position === "right"){
+    input1.style.backgroundImage = "url('image/Chinese/" + realName + ".jpg')";
+    input2.innerText = titleName;
+    input3.innerText = "By " + authName;
+  }
+  else if (position === 'source'){
+    input1.style.backgroundImage = "url('image/Chinese/" + realName + ".jpg')";
+    input2.innerText = songs[0].list[indexInTheWholeCollection].name;
+    input2.style.color = "white";
+  }
 }
 
 function pausePlay(){
@@ -182,6 +143,8 @@ function seekSongUpdate(){
     var currentSeconds = Math.floor(audioTag.currentTime - currentMinutes * 60);
     var durationMinutes = Math.floor((audioTag.duration - audioTag.currentTime) / 60);
     var durationSeconds = Math.floor((audioTag.duration - audioTag.currentTime) - durationMinutes * 60);
+    var totalMinutes = Math.floor(audioTag.duration / 60);
+    var totalSeconds = Math.floor(audioTag.duration - totalMinutes * 60);
     if(currentMinutes < 10){ currentMinutes = "0" + currentMinutes;};
     if(currentSeconds < 10){ currentSeconds = "0" + currentSeconds;};
     if(durationMinutes < 10){ durationMinutes = "0" + durationMinutes;};
@@ -193,12 +156,10 @@ function seekSongUpdate(){
     }
     else if(sliderState === true){
       juiceBarDuration.style.background = color;
-    }
+    };
     musicFinishedAction();
   }
 }
-
-
 
 function mute(){
   if(audioTag.muted){
@@ -302,7 +263,7 @@ function seeIfChecked(event){
     playListQueue.firstElementChild.innerText = "playlist_play";
   }
   //if condition for queueList button being clicked
-  else if(event.target.matches('#playListQueue i' /*&& localStorage.QueueStatus === true*/)){
+  else if(event.target.matches('#playListQueue i') /*&& localStorage.QueueStatus === 'true'*/){
     queueInterface.classList.toggle("queueInterface-active");
     if (queueInterface.classList[1] === "queueInterface-active"){
       event.target.innerText = "keyboard_arrow_down";
@@ -315,93 +276,37 @@ function seeIfChecked(event){
   else if(event.target.matches('.rippleBtn')){
     event.preventDefault();
     let a = document.createElement('a')
-    a.href = 'https://drive.google.com/uc?export=download&id=1Trp8-5LM380TFEQi9HAteibSlnF170ES';
-    a.download = "";
+    a.href = currentPlaying;
     document.body.appendChild(a);
-    //a.click()
+    a.click()
     document.body.removeChild(a);
   }
-}
-
-
-function loopTableContent(){
-  nameInTableContent = [];
-  var rowsOnTable;
-  var tableSongName;
-  var tableAuthorName;
-  var combinedName;
-  for(rowsOnTable = 0; rowsOnTable < tableBody.childNodes.length; rowsOnTable++){
-    tableSongName = tableBody.childNodes[rowsOnTable].childNodes[1].innerHTML;
-    tableAuthorName = tableBody.childNodes[rowsOnTable].childNodes[2].innerHTML;
-    combinedName = tableAuthorName + "-" + tableSongName;
-    nameInTableContent.push(combinedName);
+  //if condition for juiceBarDuration being clicked
+  else if (event.target.matches('#juiceBarDuration')){
+    colorChangeOnHover(juiceBarDuration);
   }
-  console.log(nameInTableContent);
-}
-
-function seeIfSame(input, authName, titleName){
-  if (nameInTableContent.indexOf(input) !== -1){
-    console.log(input + " is in the table");
-    loopTableContent();
-    styleOfTable(input);
+  //if condition for volume mute
+  else if (event.target.matches('#volume i')){
+    mute();
   }
-  else{
-    console.log(input + ' is not in the table');
-    generateTableContent(authName, titleName);
-    loopTableContent();
-    styleOfTable(input);
+  //if condition for volume slider
+  else if (event.target.matches('#volumeRange')){
+    colorChangeOnHover(volumeSlider);
   }
-}
-
-function generateTableContent(authorName,titleName){
-  tableBody.innerHTML = "";
-  tableOutput += '<tr>';
-  tableOutput += '<td><label><input type="checkbox" class="queueCheckBox"><i class="material-icons">check_box_outline_blank</i></label></td>';
-  tableOutput += '<td class="queueTable">' + titleName + '</td>';
-  tableOutput += '<td class="queueTable">' + authorName + '</td>';
-  tableOutput += '<td class="queueTable">Option</td>';
-  tableOutput += '<td class="queueTable">Duration</td>';
-  tableBody.innerHTML = tableOutput;
-}
-
-//Change color of the row of table when the current playing song is the same as the content of that row
-function styleOfTable(parameter){
-  //Get the selected Element
-  var numberOfRowOnTable = nameInTableContent.indexOf(parameter);
-  if (currentPlaying !== ""){
-    //Initiate the unselected elements
-    var unselectedElements;
-    //Hold the value of parameter for later comparison
-    var selectedElement = parameter;
-    //Change color for the selected song on the table;
-    tableBody.childNodes[numberOfRowOnTable].childNodes[1].style.color = '#33E2FF';
-    tableBody.childNodes[numberOfRowOnTable].childNodes[2].style.color = '#33E2FF';
-    tableBody.childNodes[numberOfRowOnTable].childNodes[3].style.color = '#33E2FF';
-    tableBody.childNodes[numberOfRowOnTable].childNodes[4].style.color = '#33E2FF';
-    //Filter out the selectedSong
-    var filteredTable = nameInTableContent.filter(function(selectedElement){return selectedElement !== parameter});
-    //Get the index number of the unselected elements and change their color in the table
-    for (unselectedElements = 0; unselectedElements < filteredTable.length; unselectedElements++){
-      var nameOfUnselected = filteredTable[unselectedElements];
-      var indexInOriginalArray = nameInTableContent.indexOf(nameOfUnselected);
-      tableBody.childNodes[indexInOriginalArray].childNodes[1].style.color = 'white';
-      tableBody.childNodes[indexInOriginalArray].childNodes[2].style.color = 'white';
-      tableBody.childNodes[indexInOriginalArray].childNodes[3].style.color = 'white';
-      tableBody.childNodes[indexInOriginalArray].childNodes[4].style.color = 'white';
-    }
+  //if condition for upnext table
+  else if (event.target.matches('.refresh i')){
+    tableUpNextOutput = "";
+    getNameForUpNextTable();
   }
-  else{
-    tableBody.childNodes[0].childNodes[1].style.color = '#33E2FF';
-    tableBody.childNodes[0].childNodes[2].style.color = '#33E2FF';
-    tableBody.childNodes[0].childNodes[3].style.color = '#33E2FF';
-    tableBody.childNodes[0].childNodes[4].style.color = '#33E2FF';
+  //if condition for author name on page being pressed
+  else if (event.target.matches('.authorSName')){
+    authorPage.classList.toggle("authorPage-active");
+    authorDV = event.target.getAttribute('data-value');
+    authorNameOAP.innerText = authorDV;
   }
-}
-
-//Execute when one of the table is being clicked
-function tableWhenClicked(input){
-  if(input !== dataValue){
-    addAudioSource(input);
-    dataValue = input;
+  //if codition for back button on author page
+  else if(event.target.matches('.back') || event.target.matches('.backButton i')){
+    authorPage.classList.remove("authorPage-active");
   }
+  //console.log(event.target);
 }
