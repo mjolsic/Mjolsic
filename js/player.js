@@ -1,18 +1,50 @@
+Array.prototype.getDuplicates = function () {
+  var duplicates = {};
+  var dupNames;
+  for (var i = 0; i < this.length; i++) {
+      if(duplicates.hasOwnProperty(this[i])) {
+          duplicates[this[i]].push(i);
+      } else if (this.lastIndexOf(this[i]) !== i) {
+          duplicates[this[i]] = [i];
+      }
+  }
+  dupNames = loop(duplicates);
+  dupCollection.push(duplicates);
+  dupCollection.push(dupNames);
+  return dupCollection;
+};
+
+//NAI = name and index
+Array.prototype.getAllNAI = function () {
+  var nAI = {};
+  for (var i = 0; i < this.length; i++) {
+    if(nAI.hasOwnProperty(this[i])) {
+      nAI[this[i]].push(i);
+    }
+    else{
+      nAI[this[i]] = [i];
+    }
+  }
+  return nAI;
+};
 
 window.addEventListener("load",initialisePlayer());
 
 function testing(){
   songNameInSongs = songs[0].list.map(function(x){return x.name});
+  authorNameInSongs = songs[0].list.map(function(x){return x.authorName});
+  allVAI = authorNameInSongs.getAllNAI();
+  duplicates = authorNameInSongs.getDuplicates();
+  nonDuplicates = filter(allVAI, duplicates[1]);
 }
 
 function initialisePlayer(){
   //testing
-  testing();
+  //testing();
   getSongs();
   eventsListenerCompilation();
   relativeSizeCss();
   queueStatus();
-  getNameForUpNextTable();
 
   if (sliderState === false){
     juiceBarDuration.style.background = colorOut;
@@ -54,13 +86,20 @@ function getSongs(){
   var output = "";
   var songTitles;
   var authorDataValue;
-  for (var songsList = 4; songsList <= 7; songsList++){
-    authorPlusTitle = {};
+  var titleDataValue;
+  songNameInSongs = songs[0].list.map(function(x){return x.name});
+  authorNameInSongs = songs[0].list.map(function(x){return x.authorName});
+  allVAI = authorNameInSongs.getAllNAI();
+  nonDuplicates = JSON.parse(JSON.stringify(allVAI));
+  duplicates = authorNameInSongs.getDuplicates();
+  filter(nonDuplicates, duplicates[1]);
+  copiedArray = songNameInSongs.slice();
+  for (var songsList = 0; songsList < 4/*songs[0].list.length*/ ; songsList++){
     songTitles = songs[0].list[songsList].authorName + "-" + songs[0].list[songsList].name;
-    authorDataValue = songs[0].list[songsList].authorName
-    songNameInSongs = songs[0].list.map(function(x){return x.name});
+    authorDataValue = songs[0].list[songsList].authorName;
+    titleDataValue = songs[0].list[songsList].name;
     output += '<li class="col-md-2 col-sm-3 col-xs-4">';
-    //output += '<div class="songPicLoading" data-value="'+ authorPlusTitle.titleName +'" style="background-image:url(image/Chinese/' + songTitles + '.jpg);"' + '></div>';
+    output += '<div class="songPicLoading" data-value="'+ titleDataValue +'" style="background-image:url(image/Chinese/' + songTitles + '.jpg);"' + '></div>';
     output += '<div class="title">';
     output += '<h5 class="text-overflow">';
     output += '<a class="authorSName" data-value="' + authorDataValue + '">' + songTitles + '</a>';
@@ -74,41 +113,43 @@ function getSongs(){
 function addAudioSource(input){
   localStorage.QueueStatus = true;
   //Index in the whole song collection
-  indexInTheWholeCollection = songNameInSongs.indexOf(input);
-  authName = songs[0].list[indexInTheWholeCollection].authorName;
-  titleName = songs[0].list[indexInTheWholeCollection].name;
-  realName = authName + "-" + titleName;
+  indexInTheWholeCollection = songNameInSongs.indexOf(input)
+  var details = {};
+  details.authName = songs[0].list[indexInTheWholeCollection].authorName;
+  details.titleName = songs[0].list[indexInTheWholeCollection].name;
+  details.realName = details.authName + "-" + details.titleName;
+  //console.log(details)
   if(currentPlaying === ""){
-    generateTableContent(authName,titleName);
-    nameInTableContent.push(realName);
+    generateTableContent(details.authName,details.titleName,'queueTable');
     styleOfTable();
   }
   else if(currentPlaying === audioTag.currentSrc){
     audioTag.pause();
     styleOnAction("ended");
     audioTag.setAttribute("src", drivePreUrl + songs[0].list[indexInTheWholeCollection].driveUrl + '');
-    seeIfSame(realName,authName,titleName);
+    seeIfSame(details.authName,details.titleName,details.realName);
   }
   audioTag.innerHTML = '<source src="' + drivePreUrl + songs[0].list[indexInTheWholeCollection].driveUrl + '">';
   playPause.firstElementChild.innerText = "pause";
   currentPlaying = drivePreUrl + songs[0].list[indexInTheWholeCollection].driveUrl + '';
-  displayStyle(songPicture, songLeftContainer, "", 'source')
+  displayStyle(songPicture, songLeftContainer, "", details.realName, "", "", 'source')
   //Details on left panel
-  displayStyle(queueSongPicture, queueSongTitleText, queueSongAuthorText, "left")
+  displayStyle(queueSongPicture, queueSongTitleText, queueSongAuthorText, details.realName, details.authName, details.titleName, "left")
   //Details on right panel
-  displayStyle(queueRightSongPanel, queueRightSongTitleText, queueRightSongAuthorText, "right")
-  audioTag.play();
+  displayStyle(queueRightSongPanel, queueRightSongTitleText, queueRightSongAuthorText, details.realName, details.authName, details.titleName, "right")
+  //audioTag.play();
 }
 
-//style on the music player
-function displayStyle(input1, input2, input3, position){
+//style on the music player, 1-3 = its document reference, 4 = combinedName/realName
+//5 = authorName, 6 = titleName
+function displayStyle(input1, input2, input3, input4, input5, input6, position){
   if (position === "left" || position === "right"){
-    input1.style.backgroundImage = "url('image/Chinese/" + realName + ".jpg')";
-    input2.innerText = titleName;
-    input3.innerText = "By " + authName;
+    input1.style.backgroundImage = imageUrl + 'Chinese/"' + input4 + ".jpg')";
+    input2.innerText = input6;
+    input3.innerText = "By " + input5;
   }
   else if (position === 'source'){
-    input1.style.backgroundImage = "url('image/Chinese/" + realName + ".jpg')";
+    input1.style.backgroundImage = imageUrl + 'Chinese/"' + input4 + ".jpg')";
     input2.innerText = songs[0].list[indexInTheWholeCollection].name;
     input2.style.color = "white";
   }
@@ -182,7 +223,6 @@ function setVolume(){
   }
   else if(volumeSlider.value <= 50 && volumeSlider.value >= 1){
     volumeIcon.firstElementChild.innerText = "volume_down";
-    console.log(volumeSlider.value);
     audioTag.muted = false;
   }
   else if(volumeSlider.value <= 100 && volumeSlider.value > 50){
@@ -213,7 +253,6 @@ function musicFinishedAction(){
     playPause.firstElementChild.innerText = "play_arrow";
     styleOnAction("ended");
     juiceBarDuration.value = 0;
-    console.log(true);
   }
 }
 
@@ -236,35 +275,76 @@ function styleOnAction(input){
   }
 }
 
+//filter out the duplicates
+function filter(object, array){
+  for (var i = 0; i < array.length; i++) {
+    if(object[array[i]].length > 1 ) {
+      delete object[array[i]];
+    }
+  }
+}
+
+//loop the properties in an object
+function loop(obj){
+  var names = []
+  for (var prop in obj){
+    names.push(prop);
+  }
+  return names;
+}
+
+function checkIfInObj(input){
+  //not a duplicate item
+  if (nonDuplicates[input]){
+    tableAPCollection = [];
+    allSLOutput = "";
+    var itsIndex = nonDuplicates[input][0];
+    generateTableContent(input,songs[0].list[itsIndex].name, 'allListTable');
+    allSLOutput = tableAPCollection[0].output;
+    allSongsList.innerHTML = allSLOutput;
+  }
+  //duplicate item
+  else{
+    tableAPCollection = [];
+    allSLOutput = "";
+    duplicates[0][input].forEach(function(x){generateTableContent(input,songs[0].list[x].name,'allListTable')});
+    tableAPCollection.forEach(function(x){allSLOutput += x.output});
+    allSongsList.innerHTML = allSLOutput;
+  }
+}
+
 //Execute when anything in the document is being clicked
 function seeIfChecked(event){
   //If condition for checkboxes on table being clicked
-  if(event.target.matches('.queueCheckBox')){
-    if(event.target.checked){
+  if (event.target.matches('.queueCheckBox')){
+    if (event.target.checked){
       event.target.nextSibling.innerText = "check_box";
     }
     else{
       event.target.nextSibling.innerText = "check_box_outline_blank";
     }
   }
-  //If condition for rows on table being clicked
-  else if(event.target.matches('.queueTable')){
+  //If condition for rows on tableBody being clicked
+  else if (event.target.matches('.queueTable')){
     tableWhenClicked(event.target.parentElement.childNodes[1].innerHTML);
   }
   //If condition for picture on index page being clicked
-  else if(event.target.matches('.songPicLoading')){
+  else if (event.target.matches('.songPicLoading')){
     dataValue = event.target.getAttribute('data-value');
     currentPlayingTitle = dataValue;
     addAudioSource(dataValue);
   }
   //if condition for arrow down icon on queueinterface being clicked
-  else if(event.target.matches('.collapseButton i')){
+  else if (event.target.matches('.collapseButton i')){
     queueInterface.classList.remove("queueInterface-active");
+    mainContent.classList.remove('hide');
     playListQueue.firstElementChild.innerText = "playlist_play";
   }
   //if condition for queueList button being clicked
-  else if(event.target.matches('#playListQueue i') /*&& localStorage.QueueStatus === 'true'*/){
+  else if (event.target.matches('#playListQueue i') /*&& localStorage.QueueStatus === 'true'*/){
     queueInterface.classList.toggle("queueInterface-active");
+    mainContent.classList.toggle('hide');
+    getNameForUpNextTable();
     if (queueInterface.classList[1] === "queueInterface-active"){
       event.target.innerText = "keyboard_arrow_down";
     }
@@ -273,7 +353,7 @@ function seeIfChecked(event){
     }
   }
   //if condition to animate ripple button effect
-  else if(event.target.matches('.rippleBtn')){
+  else if (event.target.matches('.rippleBtn')){
     event.preventDefault();
     let a = document.createElement('a')
     a.href = currentPlaying;
@@ -295,18 +375,36 @@ function seeIfChecked(event){
   }
   //if condition for upnext table
   else if (event.target.matches('.refresh i')){
-    tableUpNextOutput = "";
-    getNameForUpNextTable();
+    getNameForUpNextTable('refresh');
   }
-  //if condition for author name on page being pressed
+  //if condition for author name on index page being pressed, ADV = author data value, VAI = value and indexes
   else if (event.target.matches('.authorSName')){
-    authorPage.classList.toggle("authorPage-active");
+    authorPage.classList.toggle('authorPage-active');
+    mainContent.classList.toggle('hide');
     authorDV = event.target.getAttribute('data-value');
     authorNameOAP.innerText = authorDV;
+    checkIfInObj(authorDV);
   }
   //if codition for back button on author page
-  else if(event.target.matches('.back') || event.target.matches('.backButton i')){
+  else if (event.target.matches('.back') || event.target.matches('.backButton i')){
     authorPage.classList.remove("authorPage-active");
+    mainContent.classList.remove('hide');
+  }
+  //if condition for table in authorPage
+  else if (event.target.matches('.allListTable')){
+    tableWhenClicked(event.target.parentElement.childNodes[1].innerText);
+    currentPlayingTitle = dataValue;
+  }
+  //if condition for 'more' button
+  else if (event.target.matches('.textMuted')){
+    return true;
+  }
+  //if condition for upNextTable
+  else if (event.target.matches('.queueListUpNext')){
+    var titleN = event.target.parentElement.childNodes[1].innerText;
+    var authorN = event.target.parentElement.childNodes[2].innerText;
+    tableWhenClicked(event.target.parentElement.childNodes[1].innerText);
+    removeSelected(authorN, titleN);
   }
   //console.log(event.target);
 }

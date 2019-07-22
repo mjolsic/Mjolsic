@@ -13,9 +13,12 @@ var songPicture = document.getElementById("songPicture");
 var playListQueue = document.getElementById("playListQueue");
 var queueInterface = document.querySelector(".queueInterface");
 var songPicLoadingClass = document.getElementsByClassName('songPicLoading');
+var mainContent = document.querySelector('.mainContent');
 
 //Google drive url
 var drivePreUrl = 'https://drive.google.com/uc?export=download&id=';
+//ImageUrl
+var imageUrl = 'url("image/';
 
 
 //Variable for css
@@ -33,7 +36,7 @@ var songNameInSongs;
 //The clicked song's index in the entire collection
 var indexInTheWholeCollection;
 //The value of the currently selected song(name)
-var dataValue;
+var dataValue = "";
 //Combined of auth and title name of current playing
 var realName;
 //The title name of the current playing
@@ -59,7 +62,6 @@ var queueRightSongAuthorText = document.getElementsByClassName('queueSongAuthor'
 var rippleButton = document.getElementsByClassName('rippleBtn')[0];
 
 //Title and authorName for the clicked song
-var authName;
 var titleName;
 
 //Variable for random 3 values for songsList
@@ -69,7 +71,30 @@ var random3Values;
 var tableBodyUpNext = document.querySelector('.queueListUpNext tbody');
 var tableUpNextOutput = "";
 
-//Variables for author page, OAP = on author page
+//Variables for author page, OAP = on author page, allSL = all song list
 var authorPage = document.querySelector('.authorPage');
 var authorDV;
 var authorNameOAP = document.querySelector('.author-Name');
+var authorNameInSongs = [];
+var dupCollection = [];
+var allVAI;
+var duplicates;
+var nonDuplicates;
+var allSongsList = document.querySelector('.allSongsList tbody');
+var allSLOutput = "";
+
+//Table Content collection, AP = author page,QL = queuelist, UN = upNext, cTc = create table content
+var tableInstance;
+var tableAPCollection = [];
+var tableUNCollection = [];
+var tableQLCollection = [];
+var cTC;
+var isInTable;
+var indexOfTBSelected;
+var indexOfTBUnselected;
+var indexOfUNSelected;
+var nextOne;
+var authName;
+
+//variable in function upNext();
+var copiedArray = [];

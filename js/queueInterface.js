@@ -1,73 +1,110 @@
-function loopTableContent(){
-  nameInTableContent = [];
-  var rowsOnTable;
-  var tableSongName;
-  var tableAuthorName;
-  var combinedName;
-  for(rowsOnTable = 0; rowsOnTable < tableBody.childNodes.length; rowsOnTable++){
-    tableSongName = tableBody.childNodes[rowsOnTable].childNodes[1].innerHTML;
-    tableAuthorName = tableBody.childNodes[rowsOnTable].childNodes[2].innerHTML;
-    combinedName = tableAuthorName + "-" + tableSongName;
-    nameInTableContent.push(combinedName);
-  }
-  console.log(nameInTableContent);
-}
+function seeIfSame(authName, titleName, realName){
+  isInTable = false;
+  tableQLCollection.forEach(function(x){
+    if ((x.authorName + "-" + x.titleName) === realName){
+      isInTable = true;
+    }
+  });
 
-function seeIfSame(input, authName, titleName){
-  if (nameInTableContent.indexOf(input) !== -1){
-    console.log(input + " is in the table");
-    loopTableContent();
-    styleOfTable(input);
+  if (isInTable){
+    console.log(titleName + " is in the table");
+    styleOfTable(titleName);
   }
   else{
-    console.log(input + ' is not in the table');
-    generateTableContent(authName, titleName);
-    loopTableContent();
-    styleOfTable(input);
+    console.log(titleName + ' is not in the table');
+    generateTableContent(authName, titleName, 'queueTable');
+    styleOfTable(titleName);
   }
 }
 
-function generateTableContent(authorName,titleName,upNext){
-  if (upNext){
-    tableBodyUpNext.innerHTML = "";
-    tableUpNextOutput += '<tr>';
-    tableUpNextOutput += '<td><label><input type="checkbox" class="queueCheckBox"><i class="material-icons">check_box_outline_blank</i></label></td>';
-    tableUpNextOutput += '<td class="queueTableUpNext">' + titleName + '</td>';
-    tableUpNextOutput += '<td class="queueTableUpNext">' + authorName + '</td>';
-    tableUpNextOutput += '<td class="queueTableUpNext">Option</td>';
-    tableUpNextOutput += '<td class="queueTableUpNext">' + '</td>';
-    tableBodyUpNext.innerHTML = tableUpNextOutput;
+class TableContent{
+  constructor(authorName, titleName, classN){
+    this._authorName = authorName;
+    this._titleName = titleName;
+    this._classN = classN;
+    this._output;
   }
-  else{
+  set authorName(parameter){
+    this._authorName = parameter;
+  }
+  set titleName(parameter){
+    this._titleName = parameter;
+  }
+  set classN(parameter){
+    this._classN = parameter;
+  }
+  set output(parameter){
+    this._output = parameter;
+  }
+  get authorName(){
+    return this._authorName;
+  }
+  get titleName(){
+    return this._titleName;
+  }
+  get classN(){
+    return this._classN;
+  }
+  get output(){
+    return this._output;
+  }
+  createTableContent(classN, titleName, authorName){
+    var output = '';
+    output += '<tr data-value="' + authorName + "-" + titleName + '">';
+    output += '<td><label><input type="checkbox" class="queueCheckBox"><i class="material-icons">check_box_outline_blank</i></label></td>';
+    output += '<td class="' + classN + '">' + titleName + '</td>';
+    output += '<td class="' + classN + '">' + authorName + '</td>';
+    output += '<td class="' + classN + '">Option</td>';
+    output += '<td class="' + classN + '">' + '</td>';
+    return output;
+  }
+}
+
+function generateTableContent(authorName,songName,classN){
+  tableInstance = new TableContent(authorName,songName,classN);
+  //ctc = create table content
+  cTC = tableInstance.createTableContent(classN, songName, authorName);
+  tableInstance.output = cTC;
+
+  if (classN === "allListTable"){
+    tableAPCollection.push(tableInstance);
+  }
+  else if (classN === "queueListUpNext"){
+    tableUNCollection.push(tableInstance);
+  }
+  else if (classN === "queueTable"){
     tableBody.innerHTML = "";
-    tableOutput += '<tr>';
-    tableOutput += '<td><label><input type="checkbox" class="queueCheckBox"><i class="material-icons">check_box_outline_blank</i></label></td>';
-    tableOutput += '<td class="queueTable">' + titleName + '</td>';
-    tableOutput += '<td class="queueTable">' + authorName + '</td>';
-    tableOutput += '<td class="queueTable">Option</td>';
-    tableOutput += '<td class="queueTable">' + '</td>';
+    tableOutput = "";
+    tableQLCollection.push(tableInstance);
+    tableQLCollection.forEach(function(x){
+      tableOutput += x.output;
+    })
     tableBody.innerHTML = tableOutput;
   }
 }
 
-//Change color of the row of table when the current playing song is the same as the content of that row
+//Change color of the row of table when the current playing song is the same as the content of that row, TB = tableBody
 function styleOfTable(parameter){
-  //Get the selected Element
-  numberOfRowOnTable = nameInTableContent.indexOf(parameter);
   if (currentPlaying !== ""){
+    indexOfTBSelected = "";
+    indexOfTBUnselected = [];
+    tableQLCollection.forEach(function(x){
+      if (x.titleName === parameter){
+        //Get the selected Element
+        indexOfTBSelected = tableQLCollection.indexOf(x);
+      }
+      else{
+        //Filter out the selectedSong
+        indexOfTBUnselected.push(tableQLCollection.indexOf(x));
+      }
+    });
     //Initiate the unselected elements
     var unselectedElements;
-    //Hold the value of parameter for later comparison
-    var selectedElement = parameter;
     //Change color for the selected song on the table;
-    tableBodyStyle(numberOfRowOnTable,'color');
-    //Filter out the selectedSong
-    var filteredTable = nameInTableContent.filter(function(selectedElement){return selectedElement !== parameter});
+    tableBodyStyle(indexOfTBSelected,'color');
     //Get the index number of the unselected elements and change their color in the table to white
-    for (unselectedElements = 0; unselectedElements < filteredTable.length; unselectedElements++){
-      var nameOfUnselected = filteredTable[unselectedElements];
-      var indexInOriginalArray = nameInTableContent.indexOf(nameOfUnselected);
-      tableBodyStyle(indexInOriginalArray);
+    for (unselectedElements = 0; unselectedElements < indexOfTBUnselected.length; unselectedElements++){
+      tableBodyStyle(indexOfTBUnselected[unselectedElements]);
     }
   }
   else{
@@ -80,6 +117,9 @@ function tableWhenClicked(input){
   if(input !== dataValue){
     addAudioSource(input);
     dataValue = input;
+  }
+  else{
+    addAudioSource(input);
   }
 }
 
@@ -100,36 +140,90 @@ function tableBodyStyle(input,color){
 }
 
 //Generate random 3 values for upNext table
-function upNext(){
+function upNext(input){
   random3Values = [];
-  var copiedArray = songNameInSongs.slice();
   shuffle(copiedArray);
   var index1 = songNameInSongs.indexOf(copiedArray[0]);
   var index2 = songNameInSongs.indexOf(copiedArray[1]);
   var index3 = songNameInSongs.indexOf(copiedArray[2]);
+  if (input === 'refresh'){
+    copiedArray.push(copiedArray[0])
+    copiedArray.push(copiedArray[1])
+    copiedArray.push(copiedArray[2]);
+    index1 = songNameInSongs.indexOf(copiedArray[3]);
+    index2 = songNameInSongs.indexOf(copiedArray[4]);
+    index3 = songNameInSongs.indexOf(copiedArray[5]);
+  }
   random3Values.push(index1);
   random3Values.push(index2);
   random3Values.push(index3);
-  return random3Values;
+  copiedArray.splice(0,3);
 }
 
 //execute when refresh button is clicked
-function getNameForUpNextTable(){
-  upNext();
-  //songs title names
-  var name1 = songs[0].list[random3Values[0]].name;
-  var name2 = songs[0].list[random3Values[1]].name;
-  var name3 = songs[0].list[random3Values[2]].name;
-  //songs author names
-  var authorName1 = songs[0].list[random3Values[0]].authorName;
-  var authorName2 = songs[0].list[random3Values[1]].authorName;
-  var authorName3 = songs[0].list[random3Values[2]].authorName;
-  generateTableContent(authorName1,name1,'upNext');
-  generateTableContent(authorName2,name2,'upNext');
-  generateTableContent(authorName3,name3,'upNext');
+function getNameForUpNextTable(input){
+  tableUpNextOutput = "";
+  if (!input){
+    upNext();
+    var authorName;
+    var songName;
+    random3Values.forEach(function(x){
+      authorName = songs[0].list[x].authorName;
+      songName = songs[0].list[x].name;
+      generateTableContent(authorName, songName, 'queueListUpNext');
+    });
+  }
+  else if (input === 'refresh'){
+    upNext(input);
+    tableUNCollection = [];
+    var authorName;
+    var songName;
+    random3Values.forEach(function(x){
+      authorName = songs[0].list[x].authorName;
+      songName = songs[0].list[x].name;
+      generateTableContent(authorName, songName, 'queueListUpNext');
+    });
+  }
+  tableUNCollection.forEach(function(x){
+    tableUpNextOutput += x.output;
+  })
+  tableBodyUpNext.innerHTML = tableUpNextOutput;
 }
 
 //shuffle the array
 function shuffle(array) {
   array.sort(() => Math.random() - 0.5);
+}
+
+//Get all names in table
+function getAllName(input){
+  nameInTableContent = [];
+  var details = {};
+  input.childNodes.forEach(function(x){
+    details.authName = x.childNodes[2].innerText;
+    details.titleName = x.childNodes[1].innerText;
+    details.realName = details.authName + "-" + details.titleName;
+    nameInTableContent.push(details.realName);
+  });
+  return nameInTableContent;
+}
+
+//TB = table body, IFNO = index for next one,
+function removeSelected(auth, tilt){
+  indexOfUNSelected = "";
+  nextOne = copiedArray[0];
+  tiltIFNO = songNameInSongs.indexOf(nextOne);
+  authName = authorNameInSongs[tiltIFNO];
+
+  tableUNCollection.forEach(function(x){
+    if ((x.authorName === auth) && (x.titleName === tilt)){
+      //Get the selected Element
+      indexOfUNSelected = tableUNCollection.indexOf(x);
+    }
+  });
+
+  tableUNCollection.splice(indexOfUNSelected, 1);
+  generateTableContent(authName, nextOne, 'queueListUpNext');
+  getNameForUpNextTable('addNewOneToUNTable');
+  copiedArray.splice(0,1);
 }

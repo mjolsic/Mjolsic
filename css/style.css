@@ -207,6 +207,10 @@ input.juiceBarDuration{
   margin-top: 20px;
 }
 
+.hide{
+  display: none;
+}
+
 .m-0{
   float:left;
   margin:0!important;
