@@ -231,6 +231,7 @@ input.juiceBarDuration{
 
 .textMuted{
   color:black;
+  font-size: 15px;
 }
 
 .songPicLoading{
@@ -393,7 +394,6 @@ input.juiceBarDuration{
   min-width:140px;
   width:140px;
   height:140px;
-  background-color: orange;
 }
 
 .queueSong-Title{
@@ -634,7 +634,6 @@ button{
   width:140px;
   height:140px;
   float:left;
-  background-color: orange;
 }
 
 .authorName{

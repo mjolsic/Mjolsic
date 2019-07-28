@@ -30,21 +30,12 @@ Array.prototype.getAllNAI = function () {
 
 window.addEventListener("load",initialisePlayer());
 
-function testing(){
-  songNameInSongs = songs[0].list.map(function(x){return x.name});
-  authorNameInSongs = songs[0].list.map(function(x){return x.authorName});
-  allVAI = authorNameInSongs.getAllNAI();
-  duplicates = authorNameInSongs.getDuplicates();
-  nonDuplicates = filter(allVAI, duplicates[1]);
-}
-
 function initialisePlayer(){
-  //testing
-  //testing();
   getSongs();
   eventsListenerCompilation();
   relativeSizeCss();
   queueStatus();
+  getNameForUpNextTable();
 
   if (sliderState === false){
     juiceBarDuration.style.background = colorOut;
@@ -77,48 +68,32 @@ function eventsListenerCompilation(){
   elementsAddEventListener(volumeSlider, "mouseleave", "colorChangeOnOver", volumeSlider);
   elementsAddEventListener(volumeSlider, "mouseout", "colorChangeOnOver", volumeSlider);
   elementsAddEventListener(window, "resize", "relativeSizeCss");
-  elementsAddEventListener(document, "click", "seeIfChecked", event);
+  elementsAddEventListener(document, "click", "seeIfClicked", event);
+  elementsAddEventListener(document, "mouseover", "seeIfHover", event);
 }
 
 function getSongs(){
-  var ulClearFix = document.getElementById("ulClearFix");
-  ulClearFix.innerHTML = "";
-  var output = "";
-  var songTitles;
-  var authorDataValue;
-  var titleDataValue;
-  songNameInSongs = songs[0].list.map(function(x){return x.name});
-  authorNameInSongs = songs[0].list.map(function(x){return x.authorName});
+  songs.forEach(function(x){x.list.map(function(y){songNameInSongs.push(y.name)})})
+  songs.forEach(function(x){x.list.map(function(y){authorNameInSongs.push(y.authorName)})})
+  songs.forEach(function(x){x.list.map(function(y){driveUrlInSongs.push(y.driveUrl)})})
   allVAI = authorNameInSongs.getAllNAI();
   nonDuplicates = JSON.parse(JSON.stringify(allVAI));
   duplicates = authorNameInSongs.getDuplicates();
   filter(nonDuplicates, duplicates[1]);
   copiedArray = songNameInSongs.slice();
-  for (var songsList = 0; songsList < 4/*songs[0].list.length*/ ; songsList++){
-    songTitles = songs[0].list[songsList].authorName + "-" + songs[0].list[songsList].name;
-    authorDataValue = songs[0].list[songsList].authorName;
-    titleDataValue = songs[0].list[songsList].name;
-    output += '<li class="col-md-2 col-sm-3 col-xs-4">';
-    output += '<div class="songPicLoading" data-value="'+ titleDataValue +'" style="background-image:url(image/Chinese/' + songTitles + '.jpg);"' + '></div>';
-    output += '<div class="title">';
-    output += '<h5 class="text-overflow">';
-    output += '<a class="authorSName" data-value="' + authorDataValue + '">' + songTitles + '</a>';
-    output += '</h5>';
-    output += '</div>';
-    output += '</li>';
-  }
-  ulClearFix.innerHTML = output;
+  loopSongContent();
 }
 
 function addAudioSource(input){
   localStorage.QueueStatus = true;
   //Index in the whole song collection
   indexInTheWholeCollection = songNameInSongs.indexOf(input)
+  //retrieve all information of the song
   var details = {};
-  details.authName = songs[0].list[indexInTheWholeCollection].authorName;
-  details.titleName = songs[0].list[indexInTheWholeCollection].name;
+  details.authName = authorNameInSongs[indexInTheWholeCollection];
+  details.titleName = songNameInSongs[indexInTheWholeCollection];
   details.realName = details.authName + "-" + details.titleName;
-  //console.log(details)
+  details.driveUrl = driveUrlInSongs[indexInTheWholeCollection];
   if(currentPlaying === ""){
     generateTableContent(details.authName,details.titleName,'queueTable');
     styleOfTable();
@@ -126,33 +101,63 @@ function addAudioSource(input){
   else if(currentPlaying === audioTag.currentSrc){
     audioTag.pause();
     styleOnAction("ended");
-    audioTag.setAttribute("src", drivePreUrl + songs[0].list[indexInTheWholeCollection].driveUrl + '');
+    audioTag.setAttribute("src", drivePreUrl + details.driveUrl + '');
     seeIfSame(details.authName,details.titleName,details.realName);
   }
-  audioTag.innerHTML = '<source src="' + drivePreUrl + songs[0].list[indexInTheWholeCollection].driveUrl + '">';
+  audioTag.innerHTML = '<source src="' + drivePreUrl + details.driveUrl + '">';
   playPause.firstElementChild.innerText = "pause";
-  currentPlaying = drivePreUrl + songs[0].list[indexInTheWholeCollection].driveUrl + '';
+  currentPlaying = drivePreUrl + details.driveUrl + '';
   displayStyle(songPicture, songLeftContainer, "", details.realName, "", "", 'source')
   //Details on left panel
   displayStyle(queueSongPicture, queueSongTitleText, queueSongAuthorText, details.realName, details.authName, details.titleName, "left")
   //Details on right panel
   displayStyle(queueRightSongPanel, queueRightSongTitleText, queueRightSongAuthorText, details.realName, details.authName, details.titleName, "right")
-  //audioTag.play();
+  audioTag.play();
 }
 
 //style on the music player, 1-3 = its document reference, 4 = combinedName/realName
 //5 = authorName, 6 = titleName
 function displayStyle(input1, input2, input3, input4, input5, input6, position){
   if (position === "left" || position === "right"){
-    input1.style.backgroundImage = imageUrl + 'Chinese/"' + input4 + ".jpg')";
+    input1.style.backgroundImage = imageUrl + 'Chinese/' + input4 + '.jpg")';
     input2.innerText = input6;
     input3.innerText = "By " + input5;
   }
   else if (position === 'source'){
-    input1.style.backgroundImage = imageUrl + 'Chinese/"' + input4 + ".jpg')";
-    input2.innerText = songs[0].list[indexInTheWholeCollection].name;
+    input1.style.backgroundImage = imageUrl + 'Chinese/' + input4 + '.jpg")';
+    input2.innerText = songNameInSongs[indexInTheWholeCollection];
     input2.style.color = "white";
   }
+}
+
+function loopSongContent(){
+  for (var songType = 0; songType < 1/*songs.length*/; songType++){
+    rowOutput += '<div class="mainContent">';
+    rowOutput += '<div class="boxTitle">';
+    rowOutput += '<div class="m-0">' + songs[songType].type + ' Songs</div>';
+    rowOutput += '<div class="more pull-right">';
+    rowOutput += '<a class="textMuted">More</a>';
+    rowOutput += '</div>';
+    rowOutput += '</div>';
+    rowOutput += '<div class="outline"></div>';
+    rowOutput += '<ul class="clearfix">';
+    for (var songsList = 0; songsList < 52/*songs[songType].list.length*/ ; songsList++){
+      songTitles = songs[songType].list[songsList].authorName + "-" + songs[songType].list[songsList].name;
+      authorDataValue = songs[songType].list[songsList].authorName;
+      titleDataValue = songs[songType].list[songsList].name;
+      rowOutput += '<li class="col-md-2 col-sm-3 col-xs-4">';
+      rowOutput += '<div class="songPicLoading" data-value="'+ titleDataValue +'" style="background-image:url(image/Chinese/' + songTitles + '.jpg);"' + '></div>';
+      rowOutput += '<div class="title">';
+      rowOutput += '<h5 class="text-overflow">';
+      rowOutput += '<a class="authorSName" data-value="' + authorDataValue + '">' + songTitles + '</a>';
+      rowOutput += '</h5>';
+      rowOutput += '</div>';
+      rowOutput += '</li>';
+    }
+    rowOutput += '</ul>';
+    rowOutput += '</div>';
+  }
+  row.innerHTML = rowOutput;
 }
 
 function pausePlay(){
@@ -314,7 +319,7 @@ function checkIfInObj(input){
 }
 
 //Execute when anything in the document is being clicked
-function seeIfChecked(event){
+function seeIfClicked(event){
   //If condition for checkboxes on table being clicked
   if (event.target.matches('.queueCheckBox')){
     if (event.target.checked){
@@ -341,10 +346,9 @@ function seeIfChecked(event){
     playListQueue.firstElementChild.innerText = "playlist_play";
   }
   //if condition for queueList button being clicked
-  else if (event.target.matches('#playListQueue i') /*&& localStorage.QueueStatus === 'true'*/){
+  else if (event.target.matches('#playListQueue i') && localStorage.QueueStatus === 'true'){
     queueInterface.classList.toggle("queueInterface-active");
     mainContent.classList.toggle('hide');
-    getNameForUpNextTable();
     if (queueInterface.classList[1] === "queueInterface-active"){
       event.target.innerText = "keyboard_arrow_down";
     }
@@ -406,5 +410,12 @@ function seeIfChecked(event){
     tableWhenClicked(event.target.parentElement.childNodes[1].innerText);
     removeSelected(authorN, titleN);
   }
-  //console.log(event.target);
+}
+
+//Create Little dialog to show detail when mouse hover to the element
+function seeIfHover(event){
+  if (event.target.matches('.m-0')){
+    //console.log(true);
+  }
+  //console.log(event.target)
 }

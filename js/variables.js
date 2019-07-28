@@ -32,7 +32,7 @@ var seeking = false;
 var currentPlaying = "";
 var tableOutput = "";
 //All the song name in the whole collection
-var songNameInSongs;
+var songNameInSongs = [];
 //The clicked song's index in the entire collection
 var indexInTheWholeCollection;
 //The value of the currently selected song(name)
@@ -43,6 +43,8 @@ var realName;
 var currentPlayingTitle;
 //Index of displayed song on the table
 var numberOfRowOnTable;
+// All the drive urls
+var driveUrlInSongs = [];
 
 //Initiating Table Variables
 var tableBody = document.querySelector('.queueList tbody');
@@ -98,3 +100,11 @@ var authName;
 
 //variable in function upNext();
 var copiedArray = [];
+
+//Initiate the variable 'container' on the main page
+var row = document.querySelector('.row');
+var rowOutput = "";
+var output = "";
+var songTitles;
+var authorDataValue;
+var titleDataValue;

@@ -329,10 +329,45 @@ let songs = [
     list: [
       {
         number:0,
-        authorName:"",
-        name:"",
-        driveUrl:"",
+        authorName:"5 Seconds Of Summer",
+        name:"Youngblood",
+        driveUrl:"11_OLPM2DvQgPoFEUOkmlJ70Wu4V-dKSR",
+      },
+      {
+        number:1,
+        authorName:"88rising ft. Joji, Rich Brian, Higher Brothers, AUGUST 08",
+        name:"Midsummer Madness",
+        driveUrl:"1k0xRDIku9pB3HaZiCtJ3V6SZ3xklyNXn",
+      },
+      {
+        number:2,
+        authorName:"Alan Walker ft. Au_Ra, Tomine Harket",
+        name:"Darkside",
+        driveUrl:"16UcLe3gN3thzFkmSSP-Ha4MfZ5TozGVu",
+      },
+      {
+        number:3,
+        authorName:"Alan Walker ft. Sabrina Carpenter, Farruko",
+        name:"On My Way",
+        driveUrl:"1Z_Wp-miNCS-i-GmpiKBQuc8_0vUOAED7",
       },
     ]
   },
+  {
+    type: "Korean",
+    list: [
+      {
+        number:0,
+        authorName:"YOONA 윤아",
+        name:"如果妳也想起我(When The Wind Blows)",
+        driveUrl:"18C1KXsY0UtrLZ6JvnGLkYveNm27bBWyL",
+      },
+      {
+        number:1,
+        authorName:"린(Lyn), 한해(HanHae)",
+        name:"LOVE",
+        driveUrl:"1R-3oBpy_TiZ7Rf7U9geqBSHPFwzLq5mO",
+      }
+    ]
+  }
 ];
