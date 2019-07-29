@@ -141,7 +141,7 @@ function loopSongContent(){
     rowOutput += '</div>';
     rowOutput += '<div class="outline"></div>';
     rowOutput += '<ul class="clearfix">';
-    for (var songsList = 0; songsList < 52/*songs[songType].list.length*/ ; songsList++){
+    for (var songsList = 0; songsList < 51 /*songs[songType].list.length*/ ; songsList++){
       songTitles = songs[songType].list[songsList].authorName + "-" + songs[songType].list[songsList].name;
       authorDataValue = songs[songType].list[songsList].authorName;
       titleDataValue = songs[songType].list[songsList].name;
@@ -342,13 +342,13 @@ function seeIfClicked(event){
   //if condition for arrow down icon on queueinterface being clicked
   else if (event.target.matches('.collapseButton i')){
     queueInterface.classList.remove("queueInterface-active");
-    mainContent.classList.remove('hide');
+    row.classList.remove('hide');
     playListQueue.firstElementChild.innerText = "playlist_play";
   }
   //if condition for queueList button being clicked
   else if (event.target.matches('#playListQueue i') && localStorage.QueueStatus === 'true'){
     queueInterface.classList.toggle("queueInterface-active");
-    mainContent.classList.toggle('hide');
+    row.classList.toggle('hide');
     if (queueInterface.classList[1] === "queueInterface-active"){
       event.target.innerText = "keyboard_arrow_down";
     }
@@ -384,7 +384,7 @@ function seeIfClicked(event){
   //if condition for author name on index page being pressed, ADV = author data value, VAI = value and indexes
   else if (event.target.matches('.authorSName')){
     authorPage.classList.toggle('authorPage-active');
-    mainContent.classList.toggle('hide');
+    row.classList.toggle('hide');
     authorDV = event.target.getAttribute('data-value');
     authorNameOAP.innerText = authorDV;
     checkIfInObj(authorDV);
@@ -392,7 +392,7 @@ function seeIfClicked(event){
   //if codition for back button on author page
   else if (event.target.matches('.back') || event.target.matches('.backButton i')){
     authorPage.classList.remove("authorPage-active");
-    mainContent.classList.remove('hide');
+    row.classList.remove('hide');
   }
   //if condition for table in authorPage
   else if (event.target.matches('.allListTable')){

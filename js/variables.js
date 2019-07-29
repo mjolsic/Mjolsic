@@ -13,7 +13,6 @@ var songPicture = document.getElementById("songPicture");
 var playListQueue = document.getElementById("playListQueue");
 var queueInterface = document.querySelector(".queueInterface");
 var songPicLoadingClass = document.getElementsByClassName('songPicLoading');
-var mainContent = document.querySelector('.mainContent');
 
 //Google drive url
 var drivePreUrl = 'https://drive.google.com/uc?export=download&id=';
@@ -108,3 +107,6 @@ var output = "";
 var songTitles;
 var authorDataValue;
 var titleDataValue;
+
+
+//main content

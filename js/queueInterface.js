@@ -168,8 +168,8 @@ function getNameForUpNextTable(input){
     var authorName;
     var songName;
     random3Values.forEach(function(x){
-      authorName = songs[0].list[x].authorName;
-      songName = songs[0].list[x].name;
+      authorName = authorNameInSongs[x];
+      songName = songNameInSongs[x];
       generateTableContent(authorName, songName, 'queueListUpNext');
     });
   }
@@ -179,8 +179,8 @@ function getNameForUpNextTable(input){
     var authorName;
     var songName;
     random3Values.forEach(function(x){
-      authorName = songs[0].list[x].authorName;
-      songName = songs[0].list[x].name;
+      authorName = authorNameInSongs[x];
+      songName = songNameInSongs[x];
       generateTableContent(authorName, songName, 'queueListUpNext');
     });
   }
