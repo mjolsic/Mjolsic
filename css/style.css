@@ -675,3 +675,106 @@ button{
 .playAll{
   border-radius: 50px 50px 50px 50px;
 }
+
+.morePage{
+  z-index: 5;
+  width:100%;
+  background-color: #202020;
+  top:0px;
+  margin-top: 50px;
+  transform: translateX(100%);
+  position: fixed;
+  transition: transform 0.5s ease-in;
+  overflow-y:auto;
+  min-width: 1030px;
+  padding-left:30px;
+  padding-right:30px;
+}
+
+.morePage-active{
+  transform: translateX(0%);
+}
+
+.morePage div{
+  display: inline-block;
+  margin-top: 20px;
+  color: white;
+}
+
+.moreDetails{
+  height:200px;
+  width:100%;
+  color:white;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: flex;
+}
+
+.morePic{
+  margin-left: 30px;
+  min-height:140px;
+  min-width:140px;
+  width:140px;
+  height:140px;
+  float:left;
+}
+
+.moreName{
+  margin-left: 30px;
+  min-height: 140px;
+  min-width: 420px;
+  width: 580px;
+  height: 140px;
+  float:left;
+}
+
+.moreName span, .moreName button{
+  display: flex;
+  flex-direction: column;
+}
+
+.more-Name{
+  font-size: 50px;
+}
+
+.moreSongs{
+  width:100%;
+}
+
+.moreSongsList{
+  margin:20px 0px;
+  width:100%;
+  color: white;
+}
+
+.moreSongsList th, .moreSongsList td{
+  padding:10px 15px;
+}
+
+.moreSongsList tbody tr{
+  border-bottom: 1px solid #C0C0C0;
+}
+
+.mPBackButton{
+  width: 100%;
+  display:inline-flex;
+}
+
+.mPBackButton i{
+  float:left;
+}
+
+.mPBackButton a{
+  text-decoration: none;
+  color:inherit;
+  float:left;
+  height:100%;
+}
+
+.mPBackButton a:hover{
+  color:inherit;
+}
+
+.mPBack{
+  font-size: 17px;
+}

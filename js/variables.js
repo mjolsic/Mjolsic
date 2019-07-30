@@ -107,6 +107,18 @@ var output = "";
 var songTitles;
 var authorDataValue;
 var titleDataValue;
+var chineseIndex = 0;
+var englishIndex = chineseIndex + songs[0].list.length;
+var koreanIndex = englishIndex + songs[1].list.length;
 
-
-//main content
+//Variables for more songs, mP = more page, mLT = more list table
+var morePage = document.querySelector('.morePage');
+var typeOfSong;
+var moreName = document.querySelector('.more-Name');
+var tableMPCollection = [];
+var mPTitle;
+var selectedIndex;
+var mPAuthor = [];
+var moreListTable = document.querySelector('.moreSongsList tbody');
+var mLTOutput = '';
+var queueLists = [];

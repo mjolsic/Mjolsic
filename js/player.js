@@ -62,6 +62,7 @@ function eventsListenerCompilation(){
   elementsAddEventListener(juiceBarDuration, "mouseleave", "colorChangeOnOver", juiceBarDuration);
   elementsAddEventListener(juiceBarDuration, "mouseout", "colorChangeOnOver", juiceBarDuration);
   elementsAddEventListener(audioTag, "timeupdate", "seekSongUpdate");
+  elementsAddEventListener(audioTag, "ended", "ended");
   elementsAddEventListener(volumeSlider, "mousemove", "setVolume");
   elementsAddEventListener(volumeSlider, "mousemove", "colorChangeOnHover", volumeSlider);
   elementsAddEventListener(volumeSlider, "input", "colorChangeOnHover", volumeSlider);
@@ -69,7 +70,7 @@ function eventsListenerCompilation(){
   elementsAddEventListener(volumeSlider, "mouseout", "colorChangeOnOver", volumeSlider);
   elementsAddEventListener(window, "resize", "relativeSizeCss");
   elementsAddEventListener(document, "click", "seeIfClicked", event);
-  elementsAddEventListener(document, "mouseover", "seeIfHover", event);
+  //elementsAddEventListener(document, "mouseover", "seeIfHover", event);
 }
 
 function getSongs(){
@@ -131,7 +132,7 @@ function displayStyle(input1, input2, input3, input4, input5, input6, position){
 }
 
 function loopSongContent(){
-  for (var songType = 0; songType < 1/*songs.length*/; songType++){
+  for (var songType = 0; songType < /*1*/songs.length; songType++){
     rowOutput += '<div class="mainContent">';
     rowOutput += '<div class="boxTitle">';
     rowOutput += '<div class="m-0">' + songs[songType].type + ' Songs</div>';
@@ -141,7 +142,7 @@ function loopSongContent(){
     rowOutput += '</div>';
     rowOutput += '<div class="outline"></div>';
     rowOutput += '<ul class="clearfix">';
-    for (var songsList = 0; songsList < 51 /*songs[songType].list.length*/ ; songsList++){
+    for (var songsList = 0; songsList < /*51*/ songs[songType].list.length; songsList++){
       songTitles = songs[songType].list[songsList].authorName + "-" + songs[songType].list[songsList].name;
       authorDataValue = songs[songType].list[songsList].authorName;
       titleDataValue = songs[songType].list[songsList].name;
@@ -318,6 +319,13 @@ function checkIfInObj(input){
   }
 }
 
+function ended(){
+  selectedIndex = mPTitle.indexOf(songLeftContainer.innerText) + 1;
+  if (mPTitle.indexOf(songLeftContainer.innerText) !== -1 && mPTitle[selectedIndex] !== undefined){
+    addAudioSource(mPTitle[selectedIndex]);
+  }
+}
+
 //Execute when anything in the document is being clicked
 function seeIfClicked(event){
   //If condition for checkboxes on table being clicked
@@ -401,7 +409,16 @@ function seeIfClicked(event){
   }
   //if condition for 'more' button
   else if (event.target.matches('.textMuted')){
-    return true;
+    typeOfSong = event.target.parentElement.parentElement.childNodes[0].innerText/*.slice(0,-6);*/
+    row.classList.toggle('hide');
+    morePage.classList.toggle("morePage-active");
+    moreName.innerText = typeOfSong;
+    morePageTable(typeOfSong);
+  }
+  //if codition for back button on more page
+  else if (event.target.matches('.mPBack') || event.target.matches('.mPBackButton i')){
+    row.classList.remove('hide');
+    morePage.classList.remove("morePage-active");
   }
   //if condition for upNextTable
   else if (event.target.matches('.queueListUpNext')){
@@ -409,6 +426,10 @@ function seeIfClicked(event){
     var authorN = event.target.parentElement.childNodes[2].innerText;
     tableWhenClicked(event.target.parentElement.childNodes[1].innerText);
     removeSelected(authorN, titleN);
+  }
+  else if (event.target.matches('.playAll')){
+    var page = event.target.parentElement.childNodes[1].innerText;
+    playAll(page);
   }
 }
 

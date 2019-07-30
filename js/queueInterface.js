@@ -81,6 +81,9 @@ function generateTableContent(authorName,songName,classN){
     })
     tableBody.innerHTML = tableOutput;
   }
+  else if (classN === "morelisttable"){
+    tableMPCollection.push(tableInstance);
+  }
 }
 
 //Change color of the row of table when the current playing song is the same as the content of that row, TB = tableBody
@@ -226,4 +229,43 @@ function removeSelected(auth, tilt){
   generateTableContent(authName, nextOne, 'queueListUpNext');
   getNameForUpNextTable('addNewOneToUNTable');
   copiedArray.splice(0,1);
+}
+
+function morePageTable(input){
+  //clear contents in the arrays
+  tableMPCollection = [];
+  mpAuthor = [];
+  queueLists = [];
+  if (input === "Chinese Songs"){
+    //get the selected song names
+    mPTitle = songNameInSongs.slice(chineseIndex, englishIndex);
+  }
+  else if (input === "English Songs"){
+    mPTitle = songNameInSongs.slice(englishIndex, koreanIndex);
+  }
+  else if (input === "Korean Songs"){
+    mPTitle = songNameInSongs.slice(koreanIndex, songNameInSongs.length);
+  }
+  //get the author's name for each songs
+  mPTitle.forEach(function(x){
+    indexInTheWholeCollection = songNameInSongs.indexOf(x);
+    selectedIndex = mPTitle.indexOf(x);
+    mPAuthor.push(authorNameInSongs[indexInTheWholeCollection]);
+    queueLists.push(driveUrlInSongs[indexInTheWholeCollection]);
+    var authorNameMP = mPAuthor[selectedIndex];
+    var titleNameMP = mPTitle[selectedIndex];
+    generateTableContent(authorNameMP,titleNameMP,'morelisttable');
+  })
+  moreListTable.innerHTML = "";
+  mLTOutput = "";
+  tableMPCollection.forEach(function(x){
+    mLTOutput += x.output;
+  })
+  moreListTable.innerHTML = mLTOutput;
+}
+
+function playAll(input){
+  if (input === typeOfSong){
+    addAudioSource(mPTitle[0])
+  }
 }
