@@ -122,3 +122,5 @@ var mPAuthor = [];
 var moreListTable = document.querySelector('.moreSongsList tbody');
 var mLTOutput = '';
 var queueLists = [];
+var shuffleQLCollection = [];
+var shuffling = false;

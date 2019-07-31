@@ -234,7 +234,7 @@ function removeSelected(auth, tilt){
 function morePageTable(input){
   //clear contents in the arrays
   tableMPCollection = [];
-  mpAuthor = [];
+  mPAuthor = [];
   queueLists = [];
   if (input === "Chinese Songs"){
     //get the selected song names
@@ -266,6 +266,13 @@ function morePageTable(input){
 
 function playAll(input){
   if (input === typeOfSong){
-    addAudioSource(mPTitle[0])
+    tableQLCollection = [];
+    mPTitle.forEach(function(x){
+      selectedIndex = mPTitle.indexOf(x);
+      var authorNameMP = mPAuthor[selectedIndex];
+      var titleNameMP = mPTitle[selectedIndex];
+      generateTableContent(authorNameMP,titleNameMP,'queueTable');
+    });
   }
+  addAudioSource(mPTitle[0]);
 }

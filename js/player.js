@@ -96,7 +96,7 @@ function addAudioSource(input){
   details.realName = details.authName + "-" + details.titleName;
   details.driveUrl = driveUrlInSongs[indexInTheWholeCollection];
   if(currentPlaying === ""){
-    generateTableContent(details.authName,details.titleName,'queueTable');
+    seeIfSame(details.authName,details.titleName,details.realName);
     styleOfTable();
   }
   else if(currentPlaying === audioTag.currentSrc){
@@ -142,7 +142,7 @@ function loopSongContent(){
     rowOutput += '</div>';
     rowOutput += '<div class="outline"></div>';
     rowOutput += '<ul class="clearfix">';
-    for (var songsList = 0; songsList < /*51*/ songs[songType].list.length; songsList++){
+    for (var songsList = 0; songsList < /*51*/ /*songs[songType].list.length*/ 2; songsList++){
       songTitles = songs[songType].list[songsList].authorName + "-" + songs[songType].list[songsList].name;
       authorDataValue = songs[songType].list[songsList].authorName;
       titleDataValue = songs[songType].list[songsList].name;
@@ -254,6 +254,22 @@ function colorChangeOnOver(input){
   }
 }
 
+function shuffleM(input){
+  if (input.style.color === 'rgb(51, 226, 255)'){
+    shuffling = false;
+    input.style.color = 'white';
+    console.log('There is color inside');
+  }
+  else if (input.style.color === '' || input.style.color === 'white'){
+    shuffling = true;
+    input.style.color = '#33E2FF';
+    shuffleQLCollection = tableQLCollection.slice();
+    shuffleQLCollection.splice(0,1);
+    shuffle(shuffleQLCollection);
+    console.log('No color applied');
+  }
+}
+
 function musicFinishedAction(){
   if (audioTag.ended){
     playPause.firstElementChild.innerText = "play_arrow";
@@ -320,9 +336,29 @@ function checkIfInObj(input){
 }
 
 function ended(){
-  selectedIndex = mPTitle.indexOf(songLeftContainer.innerText) + 1;
-  if (mPTitle.indexOf(songLeftContainer.innerText) !== -1 && mPTitle[selectedIndex] !== undefined){
-    addAudioSource(mPTitle[selectedIndex]);
+  if (shuffling === true){
+    shuffleQLCollection.map(function(x){
+      if(x.titleName === songLeftContainer.innerText){
+        selectedIndex = shuffleQLCollection.indexOf(x);
+      }
+    })
+    if (selectedIndex === shuffleQLCollection.length){
+      addAudioSource(shuffleQLCollection[0].titleName);
+    }
+    else if (shuffleQLCollection[(selectedIndex+1)] !== undefined){
+      addAudioSource(shuffleQLCollection[(selectedIndex+1)].titleName);
+    }
+    console.log('is shuffling')
+  }
+  else if (shuffling === false){
+    tableQLCollection.map(function(x){
+      if(x.titleName === songLeftContainer.innerText){
+        selectedIndex = tableQLCollection.indexOf(x);
+      }
+    })
+    if (tableQLCollection[(selectedIndex+1)] !== undefined){
+      addAudioSource(tableQLCollection[(selectedIndex+1)].titleName);
+    }
   }
 }
 
@@ -427,9 +463,13 @@ function seeIfClicked(event){
     tableWhenClicked(event.target.parentElement.childNodes[1].innerText);
     removeSelected(authorN, titleN);
   }
+  //if condition for play all button
   else if (event.target.matches('.playAll')){
     var page = event.target.parentElement.childNodes[1].innerText;
     playAll(page);
+  }
+  else if (event.target.matches('#shuffle i')){
+    shuffleM(event.target);
   }
 }
 
