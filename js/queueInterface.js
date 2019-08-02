@@ -75,7 +75,9 @@ function generateTableContent(authorName,songName,classN){
   else if (classN === "queueTable"){
     tableBody.innerHTML = "";
     tableOutput = "";
-    tableQLCollection.push(tableInstance);
+    if (shuffling === false){
+      tableQLCollection.push(tableInstance);
+    }  
     tableQLCollection.forEach(function(x){
       tableOutput += x.output;
     })
@@ -84,6 +86,19 @@ function generateTableContent(authorName,songName,classN){
   else if (classN === "morelisttable"){
     tableMPCollection.push(tableInstance);
   }
+  /*for shuffling
+  else if (classN === 0){
+
+    else if (repeating === 1){
+      tableBody.innerHTML = "";
+      tableOutput = "";
+      tableQLCollection.forEach(function(x){
+        tableOutput += x.output;
+      })
+      tableBody.innerHTML = tableOutput;
+
+    }
+  }*/
 }
 
 //Change color of the row of table when the current playing song is the same as the content of that row, TB = tableBody
@@ -262,6 +277,7 @@ function morePageTable(input){
     mLTOutput += x.output;
   })
   moreListTable.innerHTML = mLTOutput;
+  selectedIndex = '';
 }
 
 function playAll(input){
@@ -275,4 +291,5 @@ function playAll(input){
     });
   }
   addAudioSource(mPTitle[0]);
+  selectedIndex = '';
 }

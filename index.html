@@ -20,11 +20,16 @@
 
   <audio id="playerSource"></audio>
 
-  <div class="musicPlayerContainer">
+  <div class="musicPlayerContainer toDownward">
     <div class="songInfoMusicPlayer">
       <div id="songPicture" ></div>
-      <div class="songTitle">
-        <span id="song-Title"></span>
+      <div class="songLeftContainer">
+        <div class="songTitle">
+          <span id="song-Title"></span>
+        </div>
+        <div class="songAuthor">
+          <span id="song-Author"></span>
+        </div>
       </div>
     </div>
 
@@ -32,7 +37,7 @@
       <div class="controlButtons">
         <div id="shuffle"><i class="material-icons">shuffle</i></div>
         <div id="previous"><i class="material-icons">skip_previous</i></div>
-        <div id="play-pause" onclick="pausePlay()"><i class="material-icons">play_arrow</i></div>
+        <div id="play-pause"><i class="material-icons">play_arrow</i></div>
         <div id="next"><i class="material-icons">skip_next</i></div>
         <div id="repeat"><i class="material-icons">repeat</i></div>
       </div>
@@ -61,7 +66,7 @@
     </div>
   </div>
 
-  <div class="queueInterface">
+  <div class="queueInterface toDownward1">
     <div class="queueInformation-leftPanel">
       <div class="collapseButton"><i class="material-icons">keyboard_arrow_down</i></div>
       <div class="queueSongDetails">
@@ -125,15 +130,19 @@
 
     <div class="songInformations-rightPanel">
       <div class="queueSongPicture"></div>
-      <div class="queueSongTitle">Title</div>
-      <div class="queueSongAuthor">Author</div>
+      <div class="queueSongTitle">
+        <span id="rPTitle">Title</span>
+      </div>
+      <div class="queueSongAuthor">
+        <span id="rPAuthor">Author</span>
+      </div>
       <div class="rightPanelButton">
         <button class="rippleBtn" type="button" download>Download</button>
       </div>
     </div>
   </div>
 
-  <div class="authorPage">
+  <div class="authorPage toLeft">
 
     <div class="backButton">
       <i class="material-icons">keyboard_arrow_left</i>
@@ -173,7 +182,7 @@
 
   </div>
 
-  <div class="morePage">
+  <div class="morePage toRight">
 
     <div class="mPBackButton">
       <i class="material-icons">keyboard_arrow_left</i>
@@ -243,6 +252,7 @@
     </div>
     <script src="js/songsDetails.js"></script>
     <script src="js/queueInterface.js"></script>
+    <script src="js/functionButtons.js"></script>
     <script src="js/playList.js"></script>
     <script src="js/containerRelativeCss.js"></script>
     <script src="js/variables.js"></script>

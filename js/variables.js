@@ -1,18 +1,20 @@
 //Referencing the audio tag in the html
 var audioTag = document.getElementById("playerSource");
-var playPause = document.getElementById("play-pause");
+var playPauseB = document.getElementById("play-pause");
 var juiceBarDuration = document.getElementById("juiceBarDuration");
 var volumeIcon = document.getElementById("volume");
 var volumeSlider = document.getElementById("volumeRange");
 var startTime = document.getElementById("start");
 var endTime = document.getElementById("end");
-var previousIcon = document.getElementById("previous");
-var nextIcon = document.getElementById("next");
-var songLeftContainer = document.getElementById("song-Title");
+var previousB = document.getElementById("previous");
+var nextB = document.getElementById("next");
+var songLeftTitle = document.getElementById("song-Title");
+var songLeftAuthor = document.getElementById("song-Author");
 var songPicture = document.getElementById("songPicture");
 var playListQueue = document.getElementById("playListQueue");
 var queueInterface = document.querySelector(".queueInterface");
 var songPicLoadingClass = document.getElementsByClassName('songPicLoading');
+var playerContainer = document.querySelector('.musicPlayerContainer');
 
 //Google drive url
 var drivePreUrl = 'https://drive.google.com/uc?export=download&id=';
@@ -38,8 +40,6 @@ var indexInTheWholeCollection;
 var dataValue = "";
 //Combined of auth and title name of current playing
 var realName;
-//The title name of the current playing
-var currentPlayingTitle;
 //Index of displayed song on the table
 var numberOfRowOnTable;
 // All the drive urls
@@ -56,8 +56,8 @@ var queueSongAuthorText = document.getElementsByClassName('queueSongAuthor')[0];
 
 //Initiating Current playing song picture for right panel
 var queueRightSongPanel = document.getElementsByClassName('queueSongPicture')[1];
-var queueRightSongTitleText = document.getElementsByClassName('queueSongTitle')[1];
-var queueRightSongAuthorText = document.getElementsByClassName('queueSongAuthor')[1];
+var queueRightSongTitleText = document.getElementById('rPTitle');
+var queueRightSongAuthorText = document.getElementById('rPAuthor');
 
 //Initiate button variable
 var rippleButton = document.getElementsByClassName('rippleBtn')[0];
@@ -123,4 +123,11 @@ var moreListTable = document.querySelector('.moreSongsList tbody');
 var mLTOutput = '';
 var queueLists = [];
 var shuffleQLCollection = [];
+var repeatQLCollection;
+
+//special button state, 0 = not repeating, 1 = repeat all, 2 = repeat one, ran = random
 var shuffling = false;
+var repeating = 0;
+var temporary;
+var shuffledB4 = false;
+var ranIndex;

@@ -102,32 +102,31 @@ function addAudioSource(input){
   else if(currentPlaying === audioTag.currentSrc){
     audioTag.pause();
     styleOnAction("ended");
-    audioTag.setAttribute("src", drivePreUrl + details.driveUrl + '');
     seeIfSame(details.authName,details.titleName,details.realName);
   }
-  audioTag.innerHTML = '<source src="' + drivePreUrl + details.driveUrl + '">';
-  playPause.firstElementChild.innerText = "pause";
+  audioTag.setAttribute("src", drivePreUrl + details.driveUrl + '');
+  playPauseB.firstElementChild.innerText = "pause";
   currentPlaying = drivePreUrl + details.driveUrl + '';
-  displayStyle(songPicture, songLeftContainer, "", details.realName, "", "", 'source')
+  displayStyle(songPicture, songLeftTitle, songLeftAuthor, details.realName, details.authName, details.titleName, 'source')
   //Details on left panel
   displayStyle(queueSongPicture, queueSongTitleText, queueSongAuthorText, details.realName, details.authName, details.titleName, "left")
   //Details on right panel
   displayStyle(queueRightSongPanel, queueRightSongTitleText, queueRightSongAuthorText, details.realName, details.authName, details.titleName, "right")
-  audioTag.play();
+  //audioTag.play();
 }
 
 //style on the music player, 1-3 = its document reference, 4 = combinedName/realName
 //5 = authorName, 6 = titleName
 function displayStyle(input1, input2, input3, input4, input5, input6, position){
+  input1.style.backgroundImage = imageUrl + 'Chinese/' + input4 + '.jpg")';
+  input2.innerText = input6;
   if (position === "left" || position === "right"){
-    input1.style.backgroundImage = imageUrl + 'Chinese/' + input4 + '.jpg")';
-    input2.innerText = input6;
     input3.innerText = "By " + input5;
   }
   else if (position === 'source'){
-    input1.style.backgroundImage = imageUrl + 'Chinese/' + input4 + '.jpg")';
-    input2.innerText = songNameInSongs[indexInTheWholeCollection];
+    input3.innerText = input5;
     input2.style.color = "white";
+    input3.style.color = "#C0C0C0";
   }
 }
 
@@ -161,81 +160,7 @@ function loopSongContent(){
   row.innerHTML = rowOutput;
 }
 
-function pausePlay(){
-  if(audioTag.innerHTML !== "" && localStorage.QueueStatus !== "false"){
-    if(audioTag.paused){
-      audioTag.play();
-      playPause.firstElementChild.innerText = "pause";
-    }
-    else{
-      audioTag.pause();
-      playPause.firstElementChild.innerText = "play_arrow";
-    }
-  }
-}
 
-function seekSong(){
-  var juicePosition = juiceBarDuration.value/100 * audioTag.duration;
-  audioTag.currentTime = juicePosition;
-}
-
-function seekSongUpdate(){
-  if(isNaN(audioTag.currentTime) === false && isNaN(audioTag.duration) === false){
-    var newTime = audioTag.currentTime * (100 / audioTag.duration);
-    juiceBarDuration.value = newTime;
-    styleOnAction("started");
-    color = "linear-gradient(90deg, #33E2FF " + juiceBarDuration.value + "%, grey " + juiceBarDuration.value + "%)";
-    colorOut = "linear-gradient(90deg, white " + juiceBarDuration.value + "%, grey " + juiceBarDuration.value + "%)";
-    var currentMinutes = Math.floor(audioTag.currentTime / 60);
-    var currentSeconds = Math.floor(audioTag.currentTime - currentMinutes * 60);
-    var durationMinutes = Math.floor((audioTag.duration - audioTag.currentTime) / 60);
-    var durationSeconds = Math.floor((audioTag.duration - audioTag.currentTime) - durationMinutes * 60);
-    var totalMinutes = Math.floor(audioTag.duration / 60);
-    var totalSeconds = Math.floor(audioTag.duration - totalMinutes * 60);
-    if(currentMinutes < 10){ currentMinutes = "0" + currentMinutes;};
-    if(currentSeconds < 10){ currentSeconds = "0" + currentSeconds;};
-    if(durationMinutes < 10){ durationMinutes = "0" + durationMinutes;};
-    if(durationSeconds < 10){ durationSeconds = "0" + durationSeconds;};
-    startTime.innerHTML = currentMinutes + ":" + currentSeconds;
-    endTime.innerHTML = durationMinutes + ":" + durationSeconds;
-    if (sliderState === false){
-      juiceBarDuration.style.background = colorOut;
-    }
-    else if(sliderState === true){
-      juiceBarDuration.style.background = color;
-    };
-    musicFinishedAction();
-  }
-}
-
-function mute(){
-  if(audioTag.muted){
-    audioTag.muted = false;
-    volumeIcon.firstElementChild.innerText = "volume_up";
-    volumeSlider.value = 100;
-  }
-  else{
-    audioTag.muted = true;
-    volumeIcon.firstElementChild.innerText = "volume_off";
-    volumeSlider.value = 0;
-  }
-}
-
-function setVolume(){
-  audioTag.volume = volumeSlider.value/100;
-  if (volumeSlider.value < 1){
-    volumeIcon.firstElementChild.innerText = "volume_mute";
-    audioTag.muted = true;
-  }
-  else if(volumeSlider.value <= 50 && volumeSlider.value >= 1){
-    volumeIcon.firstElementChild.innerText = "volume_down";
-    audioTag.muted = false;
-  }
-  else if(volumeSlider.value <= 100 && volumeSlider.value > 50){
-    volumeIcon.firstElementChild.innerText = "volume_up";
-    audioTag.muted = false;
-  }
-}
 
 function colorChangeOnHover(input){
   color = "linear-gradient(90deg, #33E2FF " + input.value + "%, grey " + input.value + "%)";
@@ -254,46 +179,22 @@ function colorChangeOnOver(input){
   }
 }
 
-function shuffleM(input){
-  if (input.style.color === 'rgb(51, 226, 255)'){
-    shuffling = false;
-    input.style.color = 'white';
-    console.log('There is color inside');
-  }
-  else if (input.style.color === '' || input.style.color === 'white'){
-    shuffling = true;
-    input.style.color = '#33E2FF';
-    shuffleQLCollection = tableQLCollection.slice();
-    shuffleQLCollection.splice(0,1);
-    shuffle(shuffleQLCollection);
-    console.log('No color applied');
-  }
-}
-
-function musicFinishedAction(){
-  if (audioTag.ended){
-    playPause.firstElementChild.innerText = "play_arrow";
-    styleOnAction("ended");
-    juiceBarDuration.value = 0;
-  }
-}
-
 function styleOnAction(input){
   if (input === "ended"){
     startTime.style.color = "grey";
     endTime.style.color = "grey";
-    previous.style.color = "grey";
-    playPause.style.color = "grey";
-    next.style.color = "grey";
+    previousB.style.color = "grey";
+    playPauseB.style.color = "grey";
+    nextB.style.color = "grey";
     startTime.innerHTML = "--:--";
     endTime.innerHTML = "--:--";
   }
   else if (input === "started"){
     startTime.style.color = "white";
     endTime.style.color = "white";
-    previous.style.color = "white";
-    playPause.style.color = "white";
-    next.style.color = "white";
+    previousB.style.color = "white";
+    playPauseB.style.color = "white";
+    nextB.style.color = "white";
   }
 }
 
@@ -336,29 +237,22 @@ function checkIfInObj(input){
 }
 
 function ended(){
-  if (shuffling === true){
-    shuffleQLCollection.map(function(x){
-      if(x.titleName === songLeftContainer.innerText){
-        selectedIndex = shuffleQLCollection.indexOf(x);
-      }
-    })
-    if (selectedIndex === shuffleQLCollection.length){
-      addAudioSource(shuffleQLCollection[0].titleName);
+  playPauseB.firstElementChild.innerText = "play_arrow";
+  styleOnAction("ended");
+  juiceBarDuration.value = 0;
+  tableQLCollection.map(function(x){
+    if(x.titleName === songLeftTitle.innerText){
+      selectedIndex = tableQLCollection.indexOf(x);
     }
-    else if (shuffleQLCollection[(selectedIndex+1)] !== undefined){
-      addAudioSource(shuffleQLCollection[(selectedIndex+1)].titleName);
-    }
-    console.log('is shuffling')
+  })
+  if (repeating === 0){
+    rCondition(0);
   }
-  else if (shuffling === false){
-    tableQLCollection.map(function(x){
-      if(x.titleName === songLeftContainer.innerText){
-        selectedIndex = tableQLCollection.indexOf(x);
-      }
-    })
-    if (tableQLCollection[(selectedIndex+1)] !== undefined){
-      addAudioSource(tableQLCollection[(selectedIndex+1)].titleName);
-    }
+  else if (repeating === 1){
+    rCondition(1);
+  }
+  else if (repeating === 2){
+    rCondition(2)
   }
 }
 
@@ -380,24 +274,30 @@ function seeIfClicked(event){
   //If condition for picture on index page being clicked
   else if (event.target.matches('.songPicLoading')){
     dataValue = event.target.getAttribute('data-value');
-    currentPlayingTitle = dataValue;
     addAudioSource(dataValue);
+    if (localStorage.QueueStatus === "true"){
+      playerContainer.classList.remove('toDownward');
+      playerContainer.classList.toggle('returnFromVertical');
+    }
   }
   //if condition for arrow down icon on queueinterface being clicked
   else if (event.target.matches('.collapseButton i')){
-    queueInterface.classList.remove("queueInterface-active");
+    queueInterface.classList.remove("returnFromVertical");
+    queueInterface.classList.toggle("toDownward1");
     row.classList.remove('hide');
     playListQueue.firstElementChild.innerText = "playlist_play";
   }
   //if condition for queueList button being clicked
-  else if (event.target.matches('#playListQueue i') && localStorage.QueueStatus === 'true'){
-    queueInterface.classList.toggle("queueInterface-active");
+  else if (event.target.matches('#playListQueue i')){
+    queueInterface.classList.remove("toDownward1");
+    queueInterface.classList.toggle("returnFromVertical");
     row.classList.toggle('hide');
-    if (queueInterface.classList[1] === "queueInterface-active"){
+  if (queueInterface.classList[1] === "returnFromVertical"){
       event.target.innerText = "keyboard_arrow_down";
     }
     else{
       event.target.innerText = "playlist_play";
+      queueInterface.classList.toggle("toDownward1");
     }
   }
   //if condition to animate ripple button effect
@@ -427,7 +327,8 @@ function seeIfClicked(event){
   }
   //if condition for author name on index page being pressed, ADV = author data value, VAI = value and indexes
   else if (event.target.matches('.authorSName')){
-    authorPage.classList.toggle('authorPage-active');
+    authorPage.classList.remove('toLeft');
+    authorPage.classList.toggle('returnFromHorizontal');
     row.classList.toggle('hide');
     authorDV = event.target.getAttribute('data-value');
     authorNameOAP.innerText = authorDV;
@@ -435,26 +336,28 @@ function seeIfClicked(event){
   }
   //if codition for back button on author page
   else if (event.target.matches('.back') || event.target.matches('.backButton i')){
-    authorPage.classList.remove("authorPage-active");
+    authorPage.classList.remove('returnFromHorizontal');
+    authorPage.classList.toggle('toLeft');
     row.classList.remove('hide');
   }
   //if condition for table in authorPage
   else if (event.target.matches('.allListTable')){
     tableWhenClicked(event.target.parentElement.childNodes[1].innerText);
-    currentPlayingTitle = dataValue;
   }
   //if condition for 'more' button
   else if (event.target.matches('.textMuted')){
     typeOfSong = event.target.parentElement.parentElement.childNodes[0].innerText/*.slice(0,-6);*/
     row.classList.toggle('hide');
-    morePage.classList.toggle("morePage-active");
+    morePage.classList.remove('toRight');
+    morePage.classList.toggle('returnFromHorizontal');
     moreName.innerText = typeOfSong;
     morePageTable(typeOfSong);
   }
   //if codition for back button on more page
   else if (event.target.matches('.mPBack') || event.target.matches('.mPBackButton i')){
     row.classList.remove('hide');
-    morePage.classList.remove("morePage-active");
+    morePage.classList.remove('returnFromHorizontal');
+    morePage.classList.toggle('toRight');
   }
   //if condition for upNextTable
   else if (event.target.matches('.queueListUpNext')){
@@ -467,9 +370,38 @@ function seeIfClicked(event){
   else if (event.target.matches('.playAll')){
     var page = event.target.parentElement.childNodes[1].innerText;
     playAll(page);
+    if (playerContainer.classList[1] === 'toDownward'){
+      playerContainer.classList.remove('toDownward');
+      playerContainer.classList.toggle('returnFromVertical');
+    }
   }
+  //if condition when shuffle button is clicked
   else if (event.target.matches('#shuffle i')){
     shuffleM(event.target);
+  }
+  //if condition when table in more page is clicked
+  else if (event.target.matches('.morelisttable')){
+    tableWhenClicked(event.target.parentElement.childNodes[1].innerText);
+    if (playerContainer.classList[1] === 'toDownward'){
+      playerContainer.classList.remove('toDownward');
+      playerContainer.classList.toggle('returnFromVertical');
+    }
+  }
+  //if condition for repeat button
+  else if (event.target.matches('#repeat i')){
+    repeat(event.target);
+  }
+  //if condition for pause and play button
+  else if (event.target.matches('#play-pause i')){
+    pausePlay();
+  }
+  //if condition for previous button
+  else if (event.target.matches('#previous i')){
+    previous();
+  }
+  //if condition for next button
+  else if (event.target.matches('#next i')){
+    next();
   }
 }
 
