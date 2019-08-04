@@ -112,7 +112,7 @@ function addAudioSource(input){
   displayStyle(queueSongPicture, queueSongTitleText, queueSongAuthorText, details.realName, details.authName, details.titleName, "left")
   //Details on right panel
   displayStyle(queueRightSongPanel, queueRightSongTitleText, queueRightSongAuthorText, details.realName, details.authName, details.titleName, "right")
-  //audioTag.play();
+  audioTag.play();
 }
 
 //style on the music player, 1-3 = its document reference, 4 = combinedName/realName
